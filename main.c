@@ -18,7 +18,7 @@ void criar_prod(){
     cleanMe();
      estoqueProdutos = fopen("bank/estoqueProdutos.txt", "a");
      if (estoqueProdutos == NULL){
-         printf("merda");
+         printf("o arquivo não existe senhor!");
      }
      printf("==================Loja NerdZ=======================\n");
      printf("==================Menu Produto=====================\n");
@@ -31,22 +31,19 @@ void criar_prod(){
     printf("Nome: ");
     fflush(stdin);
     fgets(listaProdutos[i].name, 60, stdin);
-    fflush(stdin);
-    fprintf(estoqueProdutos, "Nome do Produto: %s", listaProdutos[i].name);
+    fprintf(estoqueProdutos, "%s", listaProdutos[i].name);
 
     printf("Preco: ");
     scanf("%lf", &listaProdutos[i].price);
     fflush(stdin);
-    fprintf(estoqueProdutos, "Preco do Produto: %.2f \n", listaProdutos[i].price);
+    fprintf(estoqueProdutos, "%.2f\n", listaProdutos[i].price);
 
 
     printf("Quantidade disponivel: ");
     scanf("%d", &listaProdutos[i].amount);
     fflush(stdin);
-    fprintf(estoqueProdutos, "Quantidade disponivel: %d unidades \n\n", listaProdutos[i].amount);
-
-
-
+    fprintf(estoqueProdutos, "%d", listaProdutos[i].amount);
+    tamanhoProdutos++;
     i++;
     fclose(estoqueProdutos);
 }
@@ -56,14 +53,16 @@ void mostrar_prod(){
     char *texto = (char *) malloc (100*sizeof(char));
     estoqueProdutos = fopen("bank/estoqueProdutos.txt", "r");
     if (listaProdutos == NULL){
-        printf("merda");
+        printf("O arquivo não existe");
+        getch();
     }
-    else{
-        listaProdutos = (produtos *) realloc(listaProdutos, (i + 1) * sizeof(produtos));
-        while(fscanf(estoqueProdutos, "Nome do Produto : %s", &listaProdutos[i].name)!= NULL){
-                printf("Nome do Produto :%s", texto);
-                i++;
+    else {
+        for(i = 0; i<tamanhoProdutos; i++){
+            while( (fscanf(estoqueProdutos,"%s %lf %d\n", &listaProdutos[i].name, &listaProdutos[i].price, &listaProdutos[i].amount))!=EOF ){
+            printf("%s %lf %d\n", listaProdutos[i].name, listaProdutos[i].price, listaProdutos[i].amount);
         }
+
+       }
     }
 }
 //Função Menu que organiza as decisões do usuário//
@@ -107,7 +106,7 @@ void menuLoja(){
                 break;
             }
             case 6:{
-                //mostrar_prod();
+                mostrar_prod();
             }
             case 7:{
                 break;

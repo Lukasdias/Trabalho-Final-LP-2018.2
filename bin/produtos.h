@@ -6,7 +6,7 @@ typedef struct produtos {
     int promotion_section;
 } produtos;
 
-
+int tamanhoProdutos = 0;
 produtos *listaProdutos = NULL;
 FILE *estoqueProdutos;
 void criar_prod();
