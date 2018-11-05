@@ -1,5 +1,9 @@
 # Trabalho-Final-LP-2018.2
 
+<p align="center">
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1btsXhIrux7awV_gHjsgMuFh-nHlpWdqjOZ2uSYgeOLt71uQVlg"/>
+</p>
+
 **Sobre a loja**: Loja do seguimento de varejo focada em venda de produtos do mercado nerd, geek, pop, decoração criativa e produtos divertidos.
 
 ## O sistema deve ser capaz de:
