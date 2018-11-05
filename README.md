@@ -1,8 +1,6 @@
---------
 <p align="center">
   <img src="https://user-images.githubusercontent.com/19470159/30515755-5be3065a-9b36-11e7-95ee-de4ee0f1fd4b.png"/>
 </p>
---------
 
 # Trabalho-Final-LP-2018.2
 
