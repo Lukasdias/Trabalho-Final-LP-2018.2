@@ -1,6 +1,6 @@
 # Trabalho-Final-LP-2018.2
 
-**Sobre a loja.**: Loja do seguimento de varejo focada em venda de produtos do mercado nerd, geek, pop, decoração criativa e produtos divertidos.
+**Sobre a loja**: Loja do seguimento de varejo focada em venda de produtos do mercado nerd, geek, pop, decoração criativa e produtos divertidos.
 
 ## O sistema deve ser capaz de:
 
