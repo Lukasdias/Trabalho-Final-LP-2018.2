@@ -16,7 +16,9 @@
  - Remover
  - Ler
  
-**Vendas**: Ao realizar vendas, o usuário do sistema deve poder conceder descontos, em porcentagem ou em valores reais.
+**Vendas**
+ - Ao realizar vendas.
+     - O usuário do sistema deve poder conceder descontos, em porcentagem ou em valores reais.
 
 ## Salvar informações sobre a venda:
 - Data da realização
