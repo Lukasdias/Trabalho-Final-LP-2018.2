@@ -2,16 +2,18 @@
 typedef struct produtos {
     char name[30];
     int amount;
-    double price;
+    float price;
     int promotion_section;
 } produtos;
 
-int tamanhoProdutos = 0;
-produtos *listaProdutos = NULL;
 FILE *estoqueProdutos;
-void criar_prod();
-void mostrar_prod();
-void remove_prod();
+produtos *novoProduto = NULL;
+
+
+void criar_Produto();
+void ler_Produto();
+void remove_Produto();
+void editar_Produto();
 void addCarrinho();
 int ver_carrinho();
 //////////////////////////////////

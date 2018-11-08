@@ -1,5 +1,8 @@
-eu ae
-25.00
-12eu ae
-223.00
-5
+Nome do Produto: Canecas Star Wars
+Preco do Produto: 17.00 
+Quantidade disponivel: 10 unidades 
+======================================
+Nome do Produto: Camisas LOTR
+Preco do Produto: 19.89 
+Quantidade disponivel: 9 unidades 
+======================================
