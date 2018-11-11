@@ -1,8 +1,17 @@
-Nome do Produto: Canecas Star Wars
-Preco do Produto: 17.00 
-Quantidade disponivel: 10 unidades 
-======================================
-Nome do Produto: Camisas LOTR
-Preco do Produto: 19.89 
-Quantidade disponivel: 9 unidades 
-======================================
+1 
+camisas vlog 
+25,00 
+20
+2 
+camisas firefly 
+28,00 
+9
+3 
+camisas 
+show de bola 
+25,00 
+34
+4 
+camisas cabeca de cearense 
+56,88 
+6

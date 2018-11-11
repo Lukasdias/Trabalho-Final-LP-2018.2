@@ -7,12 +7,106 @@ typedef struct cliente {
     char country[15];
 } clientes;
 
+int tamanhoListaC;
 
 FILE *bancoClientes;
 clientes *novoCliente = NULL;
 
-void criar_Cliente();
+void fullMe_C(clientes *ptr, FILE *arq);
+void criar_Cliente(clientes *ptr, FILE *arq);
 void editar_Cliente();
 void remove_Cliente();
-void ler_Cliente();
-//////////////////////////////
+void ler_Cliente(FILE *arq);
+
+////////////////////////////////////////////////////
+////////////////FUNÇÕES CLIENTES///////////////////
+//////////////////////////////////////////////////
+
+/////////Função para acrescentar clientes///////
+void criar_Cliente(clientes *ptr, FILE *arq){
+     cleanMe();
+     arq = fopen("bank/bancoClientes.txt", "a");
+     tamanhoListaC = sizeMeC(arq, 6);
+     ptr = (clientes *) realloc(ptr, (tamanhoListaC + 1 * sizeof(clientes)));
+
+     if (arq == NULL){
+         printf("arquivo não existe");
+     }
+     else{
+
+            printf("==================Loja NerdZ=======================\n");
+            printf("==================Menu Cliente=====================\n");
+            printf("==================Novo Cliente=====================\n");
+            printf("***************************************************\n\n");
+            //fprintf(arq, "Cliente: %d\n", tamanhoListaC + 1);
+
+            printf("Nome: ");
+            fflush(stdin);
+            fgets(ptr[tamanhoListaC].name, 50, stdin);
+            fflush(stdin);
+            fprintf(arq, "%s", ptr[tamanhoListaC].name);
+
+            printf("Endereço: ");
+            fflush(stdin);
+            fgets(ptr[tamanhoListaC].adress, 128, stdin);
+            fflush(stdin);
+            fprintf(arq, "%s", ptr[tamanhoListaC].adress);
+
+            printf("Numero de telefone: ");
+            fflush(stdin);
+            fgets(ptr[tamanhoListaC].phone, 12, stdin);
+            fflush(stdin);
+            fprintf(arq, "%s", ptr[tamanhoListaC].phone);
+
+            printf("Sua Cidade: ");
+            fflush(stdin);
+            fgets(ptr[tamanhoListaC].city, 20, stdin);
+            fflush(stdin);
+            fprintf(arq, "%s", ptr[tamanhoListaC].city);
+
+            printf("Nacionalidade: ");
+            fflush(stdin);
+            fgets(ptr[tamanhoListaC].country, 15, stdin);
+            fflush(stdin);
+            fprintf(arq, "%s", ptr[tamanhoListaC].country);
+
+            printf("Novo Cliente Cadastrado!");
+            tamanhoListaC++;
+            getch();
+            fclose(arq);
+     }
+}
+
+//Função que imprime todos os clientes cadastrados na Loja NerdZ//
+void ler_Cliente(FILE *arq){
+     cleanMe();
+
+     arq = fopen("bank/bancoClientes.txt", "r");
+     char *dadosClientes = (char *) malloc (100 * sizeof(char));
+
+     printf("==================Loja NerdZ=======================\n");
+     printf("==================Menu Cliente=====================\n");
+     printf("==================Ler Cliente=====================\n");
+     printf("***************************************************\n\n");
+
+    if (arq == NULL){
+        printf("arquivo não existe");
+    }
+    else {
+      while((fgets(dadosClientes, sizeof(dadosClientes), arq))!=NULL){
+            printf("%s", dadosClientes);
+        }
+    }
+    printf("Pressione qualquer tecla para voltar ao menu!");
+    getch();
+    fclose(arq);
+
+}
+
+//Função para editar os dados dos Clientes//
+void editar_Cliente(){
+}
+
+//Função para apagar Clientes cadastrados//
+void remove_Cliente(){
+}

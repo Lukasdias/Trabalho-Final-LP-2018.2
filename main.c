@@ -5,102 +5,25 @@
 
 #include "bin/clientes.h"
 #include "bin/produtos.h"
+// Função que retorna o número de produtos ou clientes, parametro k indica o quantos itens um produtos recebe por padrão //
+int sizeMeP(FILE *arq, int k);
+int sizeMeC(FILE *arq, int k);
 
 void menuLoja();
-void restart_C();
-void restart_P();
-int tamanhoListaC = 0, tamanhoListaP = 0;
+void cleanMe();
+void printfS(produtos *ptr);
+
 //Função main que só possui uma função sendo chamada dentro dela(menuLoja chama várias outras funções dentro de si//
 int main(void){
-    menuLoja();
+    int tamanhoListaC = sizeMeC(bancoClientes, 6);
+    fullMe_P(novoProduto, estoqueProdutos);
+    //menuLoja();
 }
 
 //Função para limpar a tela(usada frequentemente)//
 void cleanMe(){
-    #ifdef _WIN32
-        system("cls");
-    #else
-        system("clear");
-    #endif
+    system("cls");
 }
-
-//Função para os produtos serem adicionados a loja!//
-void criar_Produto(){
-    cleanMe();
-     estoqueProdutos = fopen("bank/estoqueProdutos.txt", "a");
-     novoProduto = (produtos *) realloc(novoProduto, (tamanhoListaP + 1 * sizeof(produtos)));
-     if (estoqueProdutos == NULL){
-         printf("Arquivo não existe");
-     }
-     else{
-            printf("==================Loja NerdZ=======================\n");
-            printf("==================Menu Produto=====================\n");
-            printf("==================Novo Produto=====================\n");
-            printf("***************************************************\n\n");
-            printf("Nome: ");
-            fflush(stdin);
-            fgets(novoProduto[tamanhoListaP].name, 60, stdin);
-            fflush(stdin);
-            fprintf(estoqueProdutos, "Nome do Produto: %s", novoProduto[tamanhoListaP].name);
-
-            printf("Preco: ");
-            scanf("%f", &novoProduto[tamanhoListaP].price);
-            fflush(stdin);
-            fprintf(estoqueProdutos, "Preco do Produto: %.2f \n", novoProduto[tamanhoListaP].price);
-
-
-            printf("Quantidade disponivel: ");
-            scanf("%d", &novoProduto[tamanhoListaP].amount);
-            fflush(stdin);
-            fprintf(estoqueProdutos, "Quantidade disponivel: %d unidades \n", novoProduto[tamanhoListaP].amount);
-            fprintf(estoqueProdutos, "======================================\n");
-
-            printf("Novo Produto Cadastrado!");
-            tamanhoListaP++;
-            fclose(estoqueProdutos);
-     }
-}
-
-//Função para exibir todos os produtos e seus dados)//
-void ler_Produto(){
-    cleanMe();
-    char *dadosProdutos = (char *) malloc (100 * sizeof(char));
-    estoqueProdutos = fopen("bank/estoqueProdutos.txt", "r");
-     printf("==================Loja NerdZ=======================\n");
-     printf("==================Menu Produto=====================\n");
-     printf("==================Ler Produtos=====================\n");
-     printf("***************************************************\n\n");
-
-    if (estoqueProdutos == NULL){
-        printf("arquivo não existe");
-    }
-    else {
-        while((fgets(dadosProdutos, sizeof(dadosProdutos), estoqueProdutos))!=NULL){
-            printf("%s", dadosProdutos);
-        }
-    }
-    printf("Pressione qualquer tecla para voltar ao menu!");
-    getch();
-    fclose(estoqueProdutos);
-}
-
-//Função para editar produtos já cadastrados na Loja//
-void editar_Produto(){
-    cleanMe();
-    printf("===================Loja NerdZ=======================\n");
-    printf("==================Menu Produto=====================\n");
-    printf("=================Editar Produtos=====================\n");
-    printf("***************************************************\n\n");
-
-    estoqueProdutos = fopen("bank/estoqueProdutos.txt", "r+");
-
-
-}
-
-//Função para apagar produtos cadastrados//
-void remove_Produto(){
-}
-
 //Função Menu que organiza as decisões do usuário//
 void menuLoja(){
     int menuFlag;
@@ -127,11 +50,11 @@ void menuLoja(){
 
         switch(menuFlag){
             case 1:{
-                criar_Cliente();
+                criar_Cliente(novoCliente, bancoClientes);
                 break;
             }
             case 2:{
-                criar_Produto();
+                criar_Produto(novoProduto, estoqueProdutos);
             }
             case 3:{
                 break;
@@ -140,11 +63,11 @@ void menuLoja(){
                 break;
             }
             case 5:{
-                ler_Cliente();
+                ler_Cliente(bancoClientes);
                 break;
             }
             case 6:{
-                ler_Produto();
+                ler_Produto(novoProduto, estoqueProdutos);
             }
             case 7:{
                 break;
@@ -168,92 +91,46 @@ void menuLoja(){
     }
 
 }
+//Retorna quantos produtos tem no arquivo//
+int sizeMeP(FILE *arq, int k){
 
-//Função para acrescentar clientes//
-void criar_Cliente(){
+    arq = fopen("bank/estoqueProdutos.txt", "r");
 
-     cleanMe();
-     bancoClientes = fopen("bank/bancoClientes.txt", "a");
-     novoCliente = (clientes *) realloc(novoCliente, (tamanhoListaC + 1 * sizeof(clientes)));
-     if (bancoClientes == NULL){
-         printf("arquivo não existe");
-     }
-     else{
+    char *c = (char *) malloc(50 * sizeof(char));
+    int linhas = 0;
 
-            printf("==================Loja NerdZ=======================\n");
-            printf("==================Menu Cliente=====================\n");
-            printf("==================Novo Cliente=====================\n");
-            printf("***************************************************\n\n");
-
-            printf("Nome: ");
-            fflush(stdin);
-            fgets(novoCliente[tamanhoListaC].name, 50, stdin);
-            fflush(stdin);
-            fprintf(bancoClientes, "%s", novoCliente[tamanhoListaC].name);
-
-            printf("Endereço: ");
-            fflush(stdin);
-            fgets(novoCliente[tamanhoListaC].adress, 128, stdin);
-            fflush(stdin);
-            fprintf(bancoClientes, "%s", novoCliente[tamanhoListaC].adress);
-
-            printf("Numero de telefone: ");
-            fflush(stdin);
-            fgets(novoCliente[tamanhoListaC].phone, 12, stdin);
-            fflush(stdin);
-            fprintf(bancoClientes, "%s", novoCliente[tamanhoListaC].phone);
-
-            printf("Sua Cidade: ");
-            fflush(stdin);
-            fgets(novoCliente[tamanhoListaC].city, 20, stdin);
-            fflush(stdin);
-            fprintf(bancoClientes, "%s", novoCliente[tamanhoListaC].city);
-
-            printf("Nacionalidade: ");
-            fflush(stdin);
-            fgets(novoCliente[tamanhoListaC].country, 15, stdin);
-            fflush(stdin);
-            fprintf(bancoClientes, "%s", novoCliente[tamanhoListaC].country);
-            fprintf(bancoClientes, "======================================\n");
-
-            printf("Novo Cliente Cadastrado!");
-            tamanhoListaC++;
-            //getch();
-            fclose(bancoClientes);
-     }
-}
-
-//Função que imprime todos os clientes cadastrados na Loja NerdZ//
-void ler_Cliente(){
-     cleanMe();
-
-     bancoClientes = fopen("bank/bancoClientes.txt", "r");
-     char *dadosClientes = (char *) malloc (100 * sizeof(char));
-
-     printf("==================Loja NerdZ=======================\n");
-     printf("==================Menu Cliente=====================\n");
-     printf("==================Ler Cliente=====================\n");
-     printf("***************************************************\n\n");
-
-    if (bancoClientes == NULL){
-        printf("arquivo não existe");
+    if (arq == NULL){
+        return -1;
     }
     else {
-      while((fgets(dadosClientes, sizeof(dadosClientes), bancoClientes))!=NULL){
-            printf("%s", dadosClientes);
+        while((fgets(c, 50, arq))!=NULL){
+                ++linhas;
         }
     }
-    printf("\nPressione qualquer tecla para voltar ao menu!");
-    getch();
-    fclose(bancoClientes);
+    int total = linhas/k;
+    return (total);
+    fclose(arq);
+}
+//Retorna quantos produtos tem no arquivo//
+int sizeMeC(FILE *arq, int k){
 
+    arq = fopen("bank/bancoClientes.txt", "r");
+    char *c = (char*) malloc(25000 * sizeof(char));
+
+    int linhas = 0;
+
+    if (arq == NULL){
+        return -1;
+    }
+    else{
+       while((fgets(c, 25000, arq))!=NULL){
+                ++linhas;
+       }
+    }
+    int total = linhas/k;
+    return (total);
+    fclose(arq);
 }
 
-//Função para editar os dados dos Clientes//
-void editar_Cliente(){
-}
 
-//Função para apagar Clientes cadastrados//
-void remove_Cliente(){
-}
 
