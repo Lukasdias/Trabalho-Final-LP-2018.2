@@ -1,8 +1,12 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+
 ////////////////////////////////////
 typedef struct produtos {
     char name[30];
     int amount;
-    int price;
+    float price;
     int promotion_section;
 } produtos;
 
@@ -18,10 +22,31 @@ void remove_Produto();
 void editar_Produto();
 void addCarrinho();
 int ver_carrinho();
+
+int sizeMeP(FILE *arq, int k){
+
+    arq = fopen("bank/estoqueProdutos.txt", "r");
+
+    char *c = (char *) malloc(50 * sizeof(char));
+    int linhas = 0;
+
+    if (arq == NULL){
+        return -1;
+    }
+    else {
+        while((fgets(c, 50, arq))!=NULL){
+                ++linhas;
+        }
+    }
+    int total = linhas/k;
+    return (total);
+    fclose(arq);
+}
+
 //////////////////////////////////
 //Função para os produtos serem adicionados a loja!//
 void criar_Produto(produtos *ptr, FILE *arq){
-    cleanMe();
+    system("cls");
 
     int tamanhoListaP = sizeMeP(estoqueProdutos, 4);
 
@@ -45,9 +70,9 @@ void criar_Produto(produtos *ptr, FILE *arq){
             fprintf(arq, "%s\n", ptr[tamanhoListaP].name);
 
             printf("Preco: ");
-            scanf("%d", &ptr[tamanhoListaP].price);
+            scanf("%f", &ptr[tamanhoListaP].price);
             fflush(stdin);
-            fprintf(arq, "%d\n", ptr[tamanhoListaP].price);
+            fprintf(arq, "%f\n", ptr[tamanhoListaP].price);
 
             printf("Quantidade disponivel: ");
             scanf("%d", &ptr[tamanhoListaP].amount);
@@ -63,7 +88,7 @@ void criar_Produto(produtos *ptr, FILE *arq){
 
 //Função para exibir todos os produtos e seus dados)//
 void ler_Produto(produtos *ptr, FILE *arq){
-    cleanMe();
+    system("cls");
 
 
     char *dadosProdutos = (char *) malloc (100 * sizeof(char));
@@ -83,13 +108,13 @@ void ler_Produto(produtos *ptr, FILE *arq){
         }
     }
     printf("Pressione qualquer tecla para voltar ao menu!");
-    getch();
+    system("wait");
     fclose(arq);
 }
 
 //Função para editar produtos já cadastrados na Loja//
 void editar_Produto(){
-    cleanMe();
+    system("cls");
     printf("===================Loja NerdZ=======================\n");
     printf("==================Menu Produto=====================\n");
     printf("=================Editar Produtos=====================\n");
@@ -108,21 +133,35 @@ void fullMe_P(produtos *ptr, FILE *arq){
     produtos past_ptr;
     int tamanhoListaP = sizeMeP(arq, 4), i = 0;
     int a;
+
     if(arq == NULL){
         printf("arquivo não existe, pressione qualquer tecla para retornar ao menu");
-        getch();
+        system("wait");
     }
 
     else{
+            setlocale(LC_NUMERIC, "");
+            while (fscanf(arq, "%d ", &a) != EOF){
+                fscanf(arq, "%[^\n]*c\n", past_ptr.name);
+                fscanf(arq, "%f\n", &past_ptr.price);
+                fscanf(arq, "%d\n", &past_ptr.amount);
 
-           while((fscanf(arq, "%d\n%s\n%d\n%d\n", &a, past_ptr.name, &past_ptr.price, &past_ptr.amount))!=EOF){
+                ptr = (produtos *) realloc(ptr, (i + 1) * sizeof(produtos));
+                strcpy(ptr[i].name, past_ptr.name);
+                ptr[i].price = past_ptr.price;
+                ptr[i].amount = past_ptr.amount;
+
+                printf("%d %s %f %d\n", a, ptr[i].name, ptr[i].price, ptr[i].amount);
+            }
+
+           /*while((fscanf(arq, "%d\n%[^\n]s\n%d\n%d\n", &a, past_ptr.name, &past_ptr.price, &past_ptr.amount)!=EOF)){
                ptr = (produtos *) realloc(ptr, (i + 1) * sizeof(produtos));
                strcpy(ptr[i].name, past_ptr.name);
                ptr[i].price = past_ptr.price;
                ptr[i].amount = past_ptr.amount;
                printf("%d %s %d %d\n", a, ptr[i].name, ptr[i].price, ptr[i].amount);
                i++;
-           }
+           }*/
     }
     fclose(arq);
 }

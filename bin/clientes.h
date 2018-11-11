@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 ///////////////////////////////
 typedef struct cliente {
     char name[50];
@@ -18,13 +21,33 @@ void editar_Cliente();
 void remove_Cliente();
 void ler_Cliente(FILE *arq);
 
+int sizeMeC(FILE *arq, int k){
+
+    arq = fopen("bank/bancoClientes.txt", "r");
+    char *c = (char*) malloc(25000 * sizeof(char));
+
+    int linhas = 0;
+
+    if (arq == NULL){
+        return -1;
+    }
+    else{
+       while((fgets(c, 25000, arq))!=NULL){
+                ++linhas;
+       }
+    }
+    int total = linhas/k;
+    return (total);
+    fclose(arq);
+}
+
 ////////////////////////////////////////////////////
 ////////////////FUNÇÕES CLIENTES///////////////////
 //////////////////////////////////////////////////
 
 /////////Função para acrescentar clientes///////
 void criar_Cliente(clientes *ptr, FILE *arq){
-     cleanMe();
+     system("cls");
      arq = fopen("bank/bancoClientes.txt", "a");
      tamanhoListaC = sizeMeC(arq, 6);
      ptr = (clientes *) realloc(ptr, (tamanhoListaC + 1 * sizeof(clientes)));
@@ -72,14 +95,14 @@ void criar_Cliente(clientes *ptr, FILE *arq){
 
             printf("Novo Cliente Cadastrado!");
             tamanhoListaC++;
-            getch();
+            system("pause");
             fclose(arq);
      }
 }
 
 //Função que imprime todos os clientes cadastrados na Loja NerdZ//
 void ler_Cliente(FILE *arq){
-     cleanMe();
+    system("cls");
 
      arq = fopen("bank/bancoClientes.txt", "r");
      char *dadosClientes = (char *) malloc (100 * sizeof(char));
@@ -98,7 +121,7 @@ void ler_Cliente(FILE *arq){
         }
     }
     printf("Pressione qualquer tecla para voltar ao menu!");
-    getch();
+    system("pause");
     fclose(arq);
 
 }
