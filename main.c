@@ -14,6 +14,7 @@ void cleanMe();
 //Função main que só possui uma função sendo chamada dentro dela(menuLoja chama várias outras funções dentro de si//
 int main(void){
     //fullMe_C(novoCliente, bancoClientes);
+    setlocale(LC_ALL, "Portuguese");
     fullMe_P(novoProduto, estoqueProdutos);
     //simprimir(novoProduto, estoqueProdutos);
     menuLoja();

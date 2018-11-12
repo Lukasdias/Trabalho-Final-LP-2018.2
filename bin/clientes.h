@@ -45,8 +45,12 @@ int sizeMeC(FILE *arq, int k){
 //Função para acrescentar clientes//
 void criar_Cliente(clientes *ptr, FILE *arq){
      system("cls");
+     setlocale(LC_ALL, "Portuguese");
+     
      arq = fopen("bank/bancoClientes.txt", "a");
+
      tamanhoListaC = sizeMeC(arq, 6);
+
      ptr = (clientes *) realloc(ptr, ((tamanhoListaC + 1) * sizeof(clientes)));
 
      if (arq == NULL){
@@ -95,25 +99,32 @@ void criar_Cliente(clientes *ptr, FILE *arq){
 void ler_Cliente(FILE *arq){
     system("cls");
 
-     arq = fopen("bank/bancoClientes.txt", "r");
-     char *dadosClientes = (char *) malloc (100 * sizeof(char));
+    arq = fopen("bank/bancoClientes.txt", "r");
+    clientes past_ptr;
+    int tamanhoListaC = sizeMeC(arq, 6), i = 0;
+    int id = 0;
 
-     printf("==================Loja NerdZ=======================\n");
-     printf("==================Menu Cliente=====================\n");
-     printf("==================Ler Cliente=====================\n");
-     printf("***************************************************\n\n");
-
-    if (arq == NULL){
-        printf("arquivo não existe");
+    if(arq == NULL){
+        printf("arquivo não existe, pressione qualquer tecla para retornar ao menu");
+        system("wait");
     }
+
     else {
-      while((fgets(dadosClientes, sizeof(dadosClientes), arq))!=NULL){
-            printf("%s", dadosClientes);
-        }
+            while (fscanf(arq, "%d ", &id) != EOF){
+                fscanf(arq, "%[^\n]*c\n", past_ptr.name);
+                fscanf(arq, "%[^\n]*c\n", past_ptr.adress);
+                fscanf(arq, "%[^\n]*c\n", past_ptr.phone);
+                fscanf(arq, "%[^\n]*c\n", past_ptr.city);
+                fscanf(arq, "%[^\n]*c\n", past_ptr.country);
+
+                printf("C:%d", id);
+                printf("%s\n%s\n%s\n%s\n%s\n", past_ptr.name, past_ptr.adress, past_ptr.phone, past_ptr.city, past_ptr.country);
+                //i++;
+            }
+        getch();
+        fclose(arq);
     }
-    printf("Pressione qualquer tecla para voltar ao menu!");
-    system("pause");
-    fclose(arq);
+
 
 }
 
@@ -156,7 +167,7 @@ void fullMe_C(clientes *ptr, FILE *arq){
                 printf("%d %s %s %s %s %s\n", a, ptr[i].name, ptr[i].adress, ptr[i].phone, ptr[i].city, ptr[i].country);
                 //i++;
             }
-        getch(); 
+        getch();
         fclose(arq);
     }
 }

@@ -87,24 +87,36 @@ void criar_Produto(produtos *ptr, FILE *arq){
 void ler_Produto(produtos *ptr, FILE *arq){
     system("cls");
 
-    char *dadosProdutos = (char *) malloc (100 * sizeof(char));
-
     arq = fopen("bank/estoqueProdutos.txt", "r");
+    produtos past_ptr;
+    int tamanhoListaP = sizeMeP(arq, 4), i = 0;
+    int id;
 
-     printf("==================Loja NerdZ=======================\n");
-     printf("==================Menu Produto=====================\n");
-     printf("==================Ler Produtos=====================\n");
-     printf("***************************************************\n\n");
+    if(arq == NULL){
+        printf("arquivo não existe, pressione qualquer tecla para retornar ao menu");
+        system("wait");
+    }
 
-    if (arq == NULL){
-        printf("arquivo não existe");
+    else{
+
+            printf("=================Loja NerdZ=====================\n");
+            printf("================Menu Produtos====================\n");
+            printf("================Dados Produtos===================\n");
+            printf("***************************************************\n");
+
+            setlocale(LC_NUMERIC, "");
+            while (fscanf(arq, "%d ", &id) != EOF){
+                
+                fscanf(arq, "%[^\n]*c\n", past_ptr.name);
+                fscanf(arq, "%f\n", &past_ptr.price);
+                fscanf(arq, "%d\n", &past_ptr.amount);
+
+                printf("P:%d\n", id);
+                printf("Nome: %s\nValor: %.2f\nQuantidade Disp: %d\n", past_ptr.name, past_ptr.price, past_ptr.amount);
+            }
+            printf("=============================================================\n");
     }
-    else {
-        while((fgets(dadosProdutos, sizeof(dadosProdutos), arq))!=NULL){
-            printf("%s", dadosProdutos);
-        }
-    }
-    printf("Pressione qualquer tecla para voltar ao menu!");
+        printf("pressione qualquer tecla para continuar\n");
     getch();
     fclose(arq);
 }
@@ -128,7 +140,7 @@ void fullMe_P(produtos *ptr, FILE *arq){
     arq = fopen("bank/estoqueProdutos.txt", "r");
     produtos past_ptr;
     int tamanhoListaP = sizeMeP(arq, 4), i = 0;
-    int a;
+    int id;
 
     if(arq == NULL){
         printf("arquivo não existe, pressione qualquer tecla para retornar ao menu");
@@ -137,20 +149,21 @@ void fullMe_P(produtos *ptr, FILE *arq){
 
     else{
             setlocale(LC_NUMERIC, "");
-            while (fscanf(arq, "%d ", &a) != EOF){
+            while (fscanf(arq, "%d ", &id) != EOF){
                 fscanf(arq, "%[^\n]*c\n", past_ptr.name);
                 fscanf(arq, "%f\n", &past_ptr.price);
-                fscanf(arq, "%i\n", &past_ptr.amount);
+                fscanf(arq, "%d\n", &past_ptr.amount);
 
                 ptr = (produtos *) realloc(ptr, (i + 1) * sizeof(produtos));
                 strcpy(ptr[i].name, past_ptr.name);
                 ptr[i].price = past_ptr.price;
                 ptr[i].amount = past_ptr.amount;
-                printf("%d %s %.2f %d\n", a, ptr[i].name, ptr[i].price, ptr[i].amount);
+                //printf("P:%d\n", id);
+                //printf("%s %.2f %d\n", ptr[i].name, ptr[i].price, ptr[i].amount);
                 i++;
             }
+            //printf("=============================================================\n");
     }
-    getch();
     fclose(arq);
 }
 
