@@ -67,7 +67,6 @@ void popular_clientes(Clientes *lista){
     int i, tam;
     struct cliente cliente;
     fscanf(arquivo, "%d\n", &tam);
-
     for (i = 0; i < tam; i++){
         fscanf(arquivo, "%[^\n]%*c\n", cliente.name);
         fscanf(arquivo, "%[^\n]%*c\n", cliente.phone);
