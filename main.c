@@ -1,4 +1,4 @@
-///////////////////////////
+/*///////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,7 +13,7 @@ void menuLoja();
 void cleanMe();
 //Função main que só possui uma função sendo chamada dentro dela(menuLoja chama várias outras funções dentro de si//
 int main(void){
-    //fullMe_C(novoCliente, bancoClientes);
+    fullMe_C(novoCliente, bancoClientes);
     setlocale(LC_ALL, "Portuguese");
     fullMe_P(novoProduto, estoqueProdutos);
     //simprimir(novoProduto, estoqueProdutos);
@@ -62,7 +62,7 @@ void menuLoja(){
                 break;
             }
             case 5:{
-                ler_Cliente(bancoClientes);
+                //ler_Cliente(bancoClientes);
                 break;
             }
             case 6:{
@@ -90,4 +90,82 @@ void menuLoja(){
         }
     }
 
+}
+*/
+
+#include <stdio.h>
+#include "bin/clientes.h"
+
+void menu(Clientes *);
+void add(Clientes *);
+void list(Clientes *);
+
+int main(void){
+    Clientes *lista;
+    lista = criar_clientes();
+    popular_clientes(lista);
+    menu(lista);
+    apagar_clientes(lista);
+}
+
+void menu(Clientes *lista){
+    int ch;
+    do {
+        system("cls");
+        printf("----- MENU -----\n");
+        printf("(1) - Adicionar Cliente\n");
+        printf("(2) - Remover Cliente\n");
+        printf("(3) - Listar Clientes\n");
+        printf("(0) - Sair\n");
+
+        scanf("%d", &ch);
+
+        switch (ch){
+            case 1:
+                add(lista);
+                break;
+            case 2:
+                break;
+            case 3:
+                list(lista);
+                break;
+        }
+    } while(ch != 0);
+}
+
+void add(Clientes *lista){
+    struct cliente cliente;
+    
+    fflush(stdin);
+    printf("Nome: ");
+    scanf("%[^\n]*c", cliente.name);
+    fflush(stdin);
+    printf("Telefone: ");
+    scanf("%[^\n]*c", cliente.phone);
+    fflush(stdin);
+    printf("Endereco: ");
+    scanf("%[^\n]*c", cliente.address);
+    fflush(stdin);
+    printf("Cidade: ");
+    scanf("%[^\n]*c", cliente.city);
+    fflush(stdin);
+    printf("Estado: ");
+    scanf("%[^\n]*c", cliente.estado);
+    fflush(stdin);
+
+    adicionar_clientes(lista, cliente);
+}
+
+void list(Clientes *lista){
+    int i;
+    for (i = 0; i < lista->tamanho; i++){
+        printf("Cliente %d\n", i);
+        printf("Nome: %s\n", lista->clientes[i].name);
+        printf("Telefone: %s\n", lista->clientes[i].phone);
+        printf("Endereco: %s\n", lista->clientes[i].address);
+        printf("Cidade: %s\n", lista->clientes[i].city);
+        printf("Estado: %s\n", lista->clientes[i].estado);
+    }
+
+    system("pause");
 }

@@ -1,173 +1,105 @@
-///////////////////////////////
-typedef struct cliente {
+#ifndef CLIENTES_H
+#define CLIENTES_H
+
+#include <stdlib.h>
+
+struct cliente {
     char name[50];
-    char adress[128];
-    char phone[12];
+    char address[128];
+    char phone[20];
     char city[20];
-    char country[15];
-} clientes;
-///////QTD CLIENTES CADASTRADOS/////////
-int tamanhoListaC;
-////////PONTEIROS///////////
-FILE *bancoClientes;
-clientes *novoCliente = NULL;
-////////////////FUNÇÕES///////////////////
-///////////////DECLARAÇÕES////////////////
-int sizeMeC(FILE *arq, int k);
-void fullMe_C(clientes *ptr, FILE *arq);
-void criar_Cliente(clientes *ptr, FILE *arq);
-void editar_Cliente();
-void remove_Cliente();
-void ler_Cliente(FILE *arq);
-////////////////FUNÇÕES///////////////////
-///////////////DEFINIÇÕES////////////////
-//Função para saber quantos clientes existem no arquivo//
-int sizeMeC(FILE *arq, int k){
+    char estado[15];
+};
 
-    arq = fopen("bank/bancoClientes.txt", "r");
-    char *c = (char*) malloc(25000 * sizeof(char));
+typedef struct {
+    int tamanho;
+    struct cliente *clientes;
+} Clientes;
 
-    int linhas = 0;
+Clientes *criar_clientes();
+void apagar_clientes(Clientes *);
 
-    if (arq == NULL){
-        return -1;
-    }
-    else{
-       while((fgets(c, 25000, arq))!=NULL){
-                ++linhas;
-       }
-    }
-    int total = linhas/k;
-    return (total);
-    fclose(arq);
+void popular_clientes(Clientes *);
+void salvar_clientes(Clientes *);
+
+void adicionar_clientes(Clientes *, struct cliente);
+void apagar_cliente(Clientes *, int);
+
+Clientes *criar_clientes(){
+    Clientes *lista = (Clientes *) malloc(sizeof(Clientes));
+    lista->tamanho = 0;
+    lista->clientes = NULL;
+    return lista;
 }
 
-//Função para acrescentar clientes//
-void criar_Cliente(clientes *ptr, FILE *arq){
-     system("cls");
-     setlocale(LC_ALL, "Portuguese");
-     
-     arq = fopen("bank/bancoClientes.txt", "a");
+void apagar_clientes(Clientes *lista){
+    if (lista == NULL)
+        return;
 
-     tamanhoListaC = sizeMeC(arq, 6);
-
-     ptr = (clientes *) realloc(ptr, ((tamanhoListaC + 1) * sizeof(clientes)));
-
-     if (arq == NULL){
-         printf("arquivo não existe");
-     }
-     else{
-
-            printf("==================Loja NerdZ=======================\n");
-            printf("==================Menu Cliente=====================\n");
-            printf("==================Novo Cliente=====================\n");
-            printf("***************************************************\n\n");
-            fprintf(arq, "%d\n", tamanhoListaC + 1);
-
-            printf("Nome: ");
-            scanf("%[^\n]s", ptr[tamanhoListaC].name);
-            fflush(stdin);
-            fprintf(arq, "%s\n", ptr[tamanhoListaC].name);
-
-            printf("Endereço: ");
-            scanf("%[^\n]s", ptr[tamanhoListaC].adress);
-            fflush(stdin);
-            fprintf(arq, "%s\n", ptr[tamanhoListaC].adress);
-
-            printf("Numero de telefone: ");
-            scanf("%[^\n]s", ptr[tamanhoListaC].phone);
-            fflush(stdin);
-            fprintf(arq, "%s\n", ptr[tamanhoListaC].phone);
-
-            printf("Sua Cidade: ");
-            scanf("%[^\n]s", ptr[tamanhoListaC].city);
-            fflush(stdin);
-            fprintf(arq, "%s\n", ptr[tamanhoListaC].city);
-
-            printf("Nacionalidade: ");
-            scanf("%[^\n]s", ptr[tamanhoListaC].country);
-            fflush(stdin);
-            fprintf(arq, "%s\n", ptr[tamanhoListaC].country);
-
-            printf("Novo Cliente Cadastrado!");
-            tamanhoListaC++;
-            fclose(arq);
-     }
+    salvar_clientes(lista);
+    free(lista->clientes);
+    free(lista);
 }
 
-//Função que imprime todos os clientes cadastrados na Loja NerdZ//
-void ler_Cliente(FILE *arq){
-    system("cls");
+void adicionar_clientes(Clientes *lista, struct cliente cliente){
+    if (lista == NULL)
+        return;
 
-    arq = fopen("bank/bancoClientes.txt", "r");
-    clientes past_ptr;
-    int tamanhoListaC = sizeMeC(arq, 6), i = 0;
-    int id = 0;
+    lista->clientes = (struct cliente *) realloc(lista->clientes, (lista->tamanho + 1) * sizeof(struct cliente));
+    lista->clientes[lista->tamanho] = cliente;
+    lista->tamanho++;
+}
 
-    if(arq == NULL){
-        printf("arquivo não existe, pressione qualquer tecla para retornar ao menu");
-        system("wait");
+void apagar_cliente(Clientes *lista, int posicao){
+    if (lista == NULL)
+        return;
+
+    for (; posicao < lista->tamanho - 1; posicao++)
+        lista->clientes[posicao] = lista->clientes[posicao + 1];
+    lista->clientes = (struct cliente *) realloc(lista->clientes, (lista->tamanho - 1) * sizeof(struct cliente));
+    lista->tamanho--;
+}
+
+void popular_clientes(Clientes *lista){
+    FILE *arquivo;
+    arquivo = fopen("bank/clientes.txt", "r");
+
+    int i, tam;
+    struct cliente cliente;
+    fscanf(arquivo, "%d\n", &tam);
+
+    for (i = 0; i < tam; i++){
+        fscanf(arquivo, "%[^\n]%*c\n", cliente.name);
+        fscanf(arquivo, "%[^\n]%*c\n", cliente.phone);
+        fscanf(arquivo, "%[^\n]%*c\n", cliente.address);
+        fscanf(arquivo, "%[^\n]%*c\n", cliente.city);
+        fscanf(arquivo, "%[^\n]%*c\n", cliente.estado);
+
+        adicionar_clientes(lista, cliente);
     }
 
-    else {
-            while (fscanf(arq, "%d ", &id) != EOF){
-                fscanf(arq, "%[^\n]*c\n", past_ptr.name);
-                fscanf(arq, "%[^\n]*c\n", past_ptr.adress);
-                fscanf(arq, "%[^\n]*c\n", past_ptr.phone);
-                fscanf(arq, "%[^\n]*c\n", past_ptr.city);
-                fscanf(arq, "%[^\n]*c\n", past_ptr.country);
+    fclose(arquivo);
+}
 
-                printf("C:%d", id);
-                printf("%s\n%s\n%s\n%s\n%s\n", past_ptr.name, past_ptr.adress, past_ptr.phone, past_ptr.city, past_ptr.country);
-                //i++;
-            }
-        getch();
-        fclose(arq);
+void salvar_clientes(Clientes *lista){
+    if (lista == NULL)
+        return;
+
+    FILE *arquivo;
+    arquivo = fopen("bank/clientes.txt", "w");
+
+    fprintf(arquivo, "%d\n", lista->tamanho);
+    
+    int i;
+    for (i = 0; i < lista->tamanho; i++){
+        fprintf(arquivo, "%s\n", lista->clientes[i].name);
+        fprintf(arquivo, "%s\n", lista->clientes[i].phone);
+        fprintf(arquivo, "%s\n", lista->clientes[i].address);
+        fprintf(arquivo, "%s\n", lista->clientes[i].city);
+        fprintf(arquivo, "%s\n", lista->clientes[i].estado);
     }
 
-
+    fclose(arquivo);
 }
 
-//Função para editar os dados dos Clientes//
-void editar_Cliente(){
-}
-
-//Função para apagar Clientes cadastrados//
-void remove_Cliente(){
-}
-//Função pra preencher uma struct a partir de um arquivo já preenchido//
-void fullMe_C(clientes *ptr, FILE *arq){
-    arq = fopen("bank/bancoClientes.txt", "r");
-    clientes past_ptr;
-    int tamanhoListaC = sizeMeC(arq, 6), i = 0;
-    int a = 0;
-
-    if(arq == NULL){
-        printf("arquivo não existe, pressione qualquer tecla para retornar ao menu");
-        system("wait");
-    }
-
-    else{
-            while (fscanf(arq, "%d ", &a) != EOF){
-
-                fscanf(arq, "%[^\n]*c\n", past_ptr.name);
-                fscanf(arq, "%[^\n]*c\n", past_ptr.adress);
-                fscanf(arq, "%[^\n]*c\n", past_ptr.phone);
-                fscanf(arq, "%[^\n]*c\n", past_ptr.city);
-                fscanf(arq, "%[^\n]*c\n", past_ptr.country);
-
-                ptr = (clientes *) realloc(ptr, (i + 1) * sizeof(clientes));
-
-                strcpy(ptr[i].name, past_ptr.name);
-                strcpy(ptr[i].adress, past_ptr.adress);
-                strcpy(ptr[i].phone, past_ptr.phone);
-                strcpy(ptr[i].city, past_ptr.city);
-                strcpy(ptr[i].country, past_ptr.country);
-
-                printf("%d %s %s %s %s %s\n", a, ptr[i].name, ptr[i].adress, ptr[i].phone, ptr[i].city, ptr[i].country);
-                //i++;
-            }
-        getch();
-        fclose(arq);
-    }
-}
+#endif
