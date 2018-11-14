@@ -5,6 +5,7 @@
 #include "modulos/clientes.h"
 #include "modulos/produtos.h"
 
+void menu();
 void menuProduto(Produtos *lista);
 void menuCliente(Clientes *lista);
 void addC(Clientes *);
@@ -22,11 +23,38 @@ int main(void){
     popular_clientes(lista_a);
     popular_produtos(lista_b);
 
-    menuProduto(lista_b);
-    menuCliente(lista_a);
+    menu();
+    
+}
 
-    apagar_clientes(lista_a);
-    apagar_produtos(lista_b);
+void menu(){
+    int podeContinuar = true, ch;
+     while(podeContinuar == true){
+         system("cls");
+         printf("------ MENU -----\n");
+         printf("[1] - menu produto\n");
+         printf("[2] - menu cliente\n");
+         printf("[0] - salvar sair\n");
+         printf("Escolha: ");
+
+         scanf("%d", &ch);
+         fflush(stdin);
+
+         switch (ch){
+            case 1:
+                menuProduto(lista_b);    
+                break;
+            case 2:
+                menuCliente(lista_a);                
+                break;
+            case 0:
+                podeContinuar = false;
+                apagar_clientes(lista_a);
+                apagar_produtos(lista_b);
+                //system("pause");
+                break;
+        }
+     }
 }
 
 void menuProduto(Produtos *lista){
