@@ -15,8 +15,10 @@ typedef struct {
     struct cliente *clientes;
 } Clientes;
 
+void addC(Clientes *);
+void listC(Clientes *);
 Clientes *criar_clientes();
-void apagar_clientes(Clientes *);
+void armazenar_clientes(Clientes *);
 
 void popular_clientes(Clientes *);
 void salvar_clientes(Clientes *);
@@ -33,7 +35,7 @@ Clientes *criar_clientes(){
     return lista;
 }
 
-void apagar_clientes(Clientes *lista){
+void armazenar_clientes(Clientes *lista){
     if (lista == NULL)
         return;
 
@@ -68,6 +70,7 @@ void popular_clientes(Clientes *lista){
     struct cliente cliente;
 
     if (tamanhoArquivo("dados/clientes.txt") == 0){
+        printf("arquivo vazio");
         return;
     }
 
@@ -118,5 +121,43 @@ int tamanhoArquivo(const char* nome_arquivo)
     fclose(arquivo);
 
     return tamanho;
+}
+
+void addC(Clientes *lista){
+    struct cliente cliente;
+    system("cls");
+    fflush(stdin);
+    printf("Nome: ");
+    scanf("%[^\n]*c", cliente.nome);
+    fflush(stdin);
+    printf("Telefone: ");
+    scanf("%[^\n]*c", cliente.telefone);
+    fflush(stdin);
+    printf("Endereco: ");
+    scanf("%[^\n]*c", cliente.endereco);
+    fflush(stdin);
+    printf("Cidade: ");
+    scanf("%[^\n]*c", cliente.cidade);
+    fflush(stdin);
+    printf("Estado: ");
+    scanf("%[^\n]*c", cliente.estado);
+    fflush(stdin);
+
+    adicionar_clientes(lista, cliente);
+    system("pause");
+}
+
+void listC(Clientes *lista){
+    int i;
+    system("cls");
+    for (i = 0; i < lista->tamanho; i++){
+        printf("Cliente %d\n", i);
+        printf("Nome: %s\n", lista->clientes[i].nome);
+        printf("Telefone: %s\n", lista->clientes[i].telefone);
+        printf("Endereco: %s\n", lista->clientes[i].endereco);
+        printf("Cidade: %s\n", lista->clientes[i].cidade);
+        printf("Estado: %s\n", lista->clientes[i].estado);
+    }
+    system("pause");
 }
 #endif

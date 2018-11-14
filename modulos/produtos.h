@@ -14,8 +14,11 @@ typedef struct {
      struct produto *produtos;
 } Produtos;
 
+void addP(Produtos *);
+void listP(Produtos *);
+void editP(Produtos *);
 Produtos *criar_produtos();
-void apagar_produtos(Produtos *);
+void armazenar_produtos(Produtos *);
 
 void popular_produtos(Produtos *);
 void salvar_produtos(Produtos *);
@@ -32,7 +35,7 @@ Produtos *criar_produtos(){
     return lista;
 }
 
-void apagar_produtos(Produtos *lista){
+void armazenar_produtos(Produtos *lista){
     if (lista == NULL)
         return;
 
@@ -75,7 +78,7 @@ void popular_produtos(Produtos *lista){
             fscanf(arquivo, "%[^\n]%*c\n", produto.nome);
             fscanf(arquivo, "%lf\n", &produto.valor);
             fscanf(arquivo, "%d\n", &produto.qtd);
-            
+
             adicionar_produtos(lista, produto);
         }
     fclose(arquivo);
@@ -89,7 +92,7 @@ void salvar_produtos(Produtos *lista){
     arquivo = fopen("dados/produtos.txt", "w");
 
     fprintf(arquivo, "%d\n", lista->tamanho);
-    
+
     int i;
     for (i = 0; i < lista->tamanho; i++){
         fprintf(arquivo, "%s\n", lista->produtos[i].nome);
@@ -113,4 +116,60 @@ int tamanhoArquivo2(const char* nome_arquivo)
 
     return tamanho;
 }
+
+void addP(Produtos *lista){
+    struct produto produto;
+    system("cls");
+    fflush(stdin);
+    printf("Nome: ");
+    scanf("%[^\n]*c", produto.nome);
+    fflush(stdin);
+    printf("Valor: ");
+    scanf("%lf", &produto.valor);
+    fflush(stdin);
+    printf("Qtd em estoque: ");
+    scanf("%d", &produto.qtd);
+    fflush(stdin);
+    adicionar_produtos(lista, produto);
+}
+
+void listP(Produtos *lista){
+    int i;
+    system("cls");
+    for (i = 0; i < lista->tamanho; i++){
+        printf("Produto %d\n", i + 1);
+        printf("Nome: %s\n", lista->produtos[i].nome);
+        printf("Valor %lf\n", lista->produtos[i].valor);
+        printf("Quantidade em estoque: %d\n", lista->produtos[i].qtd);
+    }
+    system("pause");
+}
+
+void editP(Produtos *lista){
+    int i, j;
+    char *user = (char *) malloc(100 * sizeof(char));
+    system("cls");
+    printf("Nome a ser buscado na lista de produtos: ");
+    scanf("%[^\n]*c", user);
+    fflush(stdin);
+    for(i = 0; i < lista->tamanho; i++){
+        if (strcmp(user, lista->produtos[i].nome) == 0){
+            printf("Nome localizado!\n");
+            fflush(stdin);
+            printf("Novo Nome: ");
+            scanf("%[^\n]*c", lista->produtos[i].nome);
+            fflush(stdin);
+            printf("Novo Valor %lf\n");
+            scanf("%f", lista->produtos[i].valor);
+            fflush(stdin);
+            printf("Nova Quantidade em estoque: %d\n");
+            scanf("%d", lista->produtos[i].qtd);
+            fflush(stdin);
+            salvar_produtos(lista);
+        }
+    }
+    //printf(OIII);
+    system("pause");
+}
+
 #endif
