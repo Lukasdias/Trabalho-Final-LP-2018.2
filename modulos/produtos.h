@@ -5,7 +5,7 @@
 
 struct produto {
     char nome[50];
-    double valor;
+    float valor;
     int qtd;
 };
 
@@ -69,19 +69,20 @@ void popular_produtos(Produtos *lista){
     int i, tam;
     struct produto produto;
 
+    setlocale(LC_NUMERIC, "");
     if (tamanhoArquivo2("dados/produtos.txt") == 0){
         return;
     }
-        setlocale(LC_NUMERIC, "");
         fscanf(arquivo, "%d\n", &tam);
         for (i = 0; i < tam; i++){
             fscanf(arquivo, "%[^\n]%*c\n", produto.nome);
-            fscanf(arquivo, "%lf\n", &produto.valor);
+            fscanf(arquivo, "%f\n", &produto.valor);
             fscanf(arquivo, "%d\n", &produto.qtd);
 
             adicionar_produtos(lista, produto);
         }
     fclose(arquivo);
+    setlocale(LC_ALL, "");
 }
 
 void salvar_produtos(Produtos *lista){
@@ -92,11 +93,12 @@ void salvar_produtos(Produtos *lista){
     arquivo = fopen("dados/produtos.txt", "w");
 
     fprintf(arquivo, "%d\n", lista->tamanho);
-
+    
+    setlocale(LC_NUMERIC, "");
     int i;
     for (i = 0; i < lista->tamanho; i++){
         fprintf(arquivo, "%s\n", lista->produtos[i].nome);
-        fprintf(arquivo, "%lf\n", lista->produtos[i].valor);
+        fprintf(arquivo, "%.2f\n", lista->produtos[i].valor);
         fprintf(arquivo, "%d\n", lista->produtos[i].qtd);
     }
 
@@ -139,7 +141,7 @@ void listP(Produtos *lista){
     for (i = 0; i < lista->tamanho; i++){
         printf("Produto %d\n", i + 1);
         printf("Nome: %s\n", lista->produtos[i].nome);
-        printf("Valor %lf\n", lista->produtos[i].valor);
+        printf("Valor %.2f\n", lista->produtos[i].valor);
         printf("Quantidade em estoque: %d\n", lista->produtos[i].qtd);
     }
     system("pause");
@@ -159,16 +161,20 @@ void editP(Produtos *lista){
             printf("Novo Nome: ");
             scanf("%[^\n]*c", lista->produtos[i].nome);
             fflush(stdin);
-            printf("Novo Valor %lf\n");
-            scanf("%f", lista->produtos[i].valor);
+            printf("Novo Valor: ");
+            scanf("%f", &lista->produtos[i].valor);
             fflush(stdin);
-            printf("Nova Quantidade em estoque: %d\n");
-            scanf("%d", lista->produtos[i].qtd);
+            printf("Nova Quantidade em estoque: ");
+            scanf("%d", &lista->produtos[i].qtd);
             fflush(stdin);
             salvar_produtos(lista);
+
+            system("pause");
+            return;
         }
     }
-    //printf(OIII);
+    
+    printf("Nome n existe\n");
     system("pause");
 }
 

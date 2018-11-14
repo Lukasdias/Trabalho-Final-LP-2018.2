@@ -2,9 +2,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <windows.h>
 #include "modulos/clientes.h"
 #include "modulos/produtos.h"
+
+#define COLOR_RED "\x1b[31m"
+#define COLOR_RESET "\x1b[0m"
 
 void menu(Clientes *lista_C, Produtos *lista_P);
 void menuProduto(Produtos *lista);
@@ -15,17 +17,6 @@ void addP(Produtos *);
 void listP(Produtos *);
 void editP(Produtos *);
 int main(void){
-    //Mudando Cor do Terminal//
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
-    WORD saved_attributes;
-
-    /* Salvar estado atual */
-    GetConsoleScreenBufferInfo(hConsole, &consoleInfo);
-    saved_attributes = consoleInfo.wAttributes;
-
-    SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
-
     Clientes *lista_c;
     Produtos *lista_p;
 
@@ -37,6 +28,7 @@ int main(void){
 
     menu(lista_c, lista_p);
 
+    printf(COLOR_RESET);
 }
 
 void menu(Clientes *lista_C, Produtos *lista_P){
@@ -44,7 +36,7 @@ void menu(Clientes *lista_C, Produtos *lista_P){
      while(podeContinuar == true){
 
          system("cls");
-         printf("Loja NerdZ\n");
+         printf(COLOR_RED "Loja NerdZ\n");
          printf("[1] - menu produtos\n");
          printf("[2] - menu clientes\n");
          printf("[0] - salvar sair\n");
@@ -78,7 +70,7 @@ void menuProduto(Produtos *lista){
         printf("[1] - Adicionar Produto\n");
         printf("[2] - Remover Produto\n");
         printf("[3] - Listar Produto\n");
-        printf("[4] - Editar Produto");
+        printf("[4] - Editar Produto\n");
         printf("[0] - Voltar para o Menu Principal\n");
         printf("Escolha: ");
         scanf("%d", &ch);

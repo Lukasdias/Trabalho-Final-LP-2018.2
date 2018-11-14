@@ -1,10 +1,10 @@
 3
 camisa 1
-18,000000
+18,00
 9
 camisa2
-28,890000
-7
-Caneca Palmirinha
-20,000000
-7
+90,00
+2
+Camisas LOTR
+28,50
+10
