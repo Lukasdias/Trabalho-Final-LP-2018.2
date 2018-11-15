@@ -160,4 +160,72 @@ void listC(Clientes *lista){
     }
     system("pause");
 }
+void editC(Clientes *lista){
+    int i;
+    char *user = (char *) malloc (100 * sizeof(char));
+
+    system("cls");
+    printf("Informe um cliente a ser buscado em nossa loja: ");
+    scanf("%[^\n]*c", user);
+    fflush(stdin);
+
+    for(i = 0; i < lista->tamanho; i++)
+        if(strcmp(user, lista->clientes[i].nome) == 0)
+
+            printf("Cliente localizado!\n");
+            printf("Novo nome:");
+            scanf("%[^\n]*c", lista->clientes[i].nome);
+            fflush(stdin);
+
+            printf("Novo telefone:");
+            scanf("%[^\n]*c", lista->clientes[i].telefone);
+            fflush(stdin);
+
+            printf("Nova moradia: ");
+            scanf("%[^\n]*c", lista->clientes[i].endereco);
+            fflush(stdin);
+
+            printf("Nova cidade: ");
+            scanf("%[^\n]*c", lista->clientes[i].cidade);
+            fflush(stdin);
+
+            printf("Novo Estado: ");
+            scanf("%[^\n]*c", lista->clientes[i].estado);
+            fflush(stdin);
+
+            salvar_clientes(lista);
+            system("pause");
+            return;
+        printf("O cliente digitado n existe!\n");
+        system("pause");
+}
+
+int deleteC(Clientes *lista, const char* nomeCliente){
+    int i = 0, k;
+
+    if (lista == NULL)
+        printf("Erro, nao foi possivel excluir o cliente");
+        system("pause");
+        return 0;
+
+    if (lista->tamanho == 0)
+        printf("Erro, nao foi possivel excluir o cliente");
+        system("pause");
+        return 0;
+
+    while(i < lista->tamanho && strcmp (lista->clientes[i].nome, nomeCliente) != 0)
+        i++;
+
+    if (i == lista->tamanho)
+        printf("Erro, nao foi possivel excluir o cliente");
+        system("pause");
+        return 0;
+
+    for(k = i;k < lista->tamanho - 1; k++)
+        lista->clientes[k] = lista->clientes[k+1];
+    lista->tamanho--;
+    printf("Cliente removido com sucesso\n");
+    system("pause");
+    return 1;
+}
 #endif

@@ -38,7 +38,6 @@ Produtos *criar_produtos(){
 void armazenar_produtos(Produtos *lista){
     if (lista == NULL)
         return;
-
     salvar_produtos(lista);
     free(lista->produtos);
     free(lista);
@@ -93,7 +92,7 @@ void salvar_produtos(Produtos *lista){
     arquivo = fopen("dados/produtos.txt", "w");
 
     fprintf(arquivo, "%d\n", lista->tamanho);
-    
+
     setlocale(LC_NUMERIC, "");
     int i;
     for (i = 0; i < lista->tamanho; i++){
@@ -122,12 +121,14 @@ int tamanhoArquivo2(const char* nome_arquivo)
 void addP(Produtos *lista){
     struct produto produto;
     system("cls");
+    printf("======================Loja NerdZ===================\n");
+    printf("=====================Menu Adicionar=================\n");
     fflush(stdin);
     printf("Nome: ");
     scanf("%[^\n]*c", produto.nome);
     fflush(stdin);
     printf("Valor: ");
-    scanf("%lf", &produto.valor);
+    scanf("%f", &produto.valor);
     fflush(stdin);
     printf("Qtd em estoque: ");
     scanf("%d", &produto.qtd);
@@ -138,10 +139,12 @@ void addP(Produtos *lista){
 void listP(Produtos *lista){
     int i;
     system("cls");
+    printf("=====================Loja NerdZ===================\n");
+    printf("=====================Menu Listar=================\n");
     for (i = 0; i < lista->tamanho; i++){
         printf("Produto %d\n", i + 1);
         printf("Nome: %s\n", lista->produtos[i].nome);
-        printf("Valor %.2f\n", lista->produtos[i].valor);
+        printf("Valor %f\n", lista->produtos[i].valor);
         printf("Quantidade em estoque: %d\n", lista->produtos[i].qtd);
     }
     system("pause");
@@ -151,7 +154,9 @@ void editP(Produtos *lista){
     int i, j;
     char *user = (char *) malloc(100 * sizeof(char));
     system("cls");
-    printf("Nome a ser buscado na lista de produtos: ");
+    printf("=====================Loja NerdZ===================\n");
+    printf("=====================Menu Editar=================\n");
+    printf("Informe um nome a ser buscado na lista de produtos: ");
     scanf("%[^\n]*c", user);
     fflush(stdin);
     for(i = 0; i < lista->tamanho; i++){
@@ -173,9 +178,34 @@ void editP(Produtos *lista){
             return;
         }
     }
-    
+
     printf("Nome n existe\n");
     system("pause");
+}
+
+int deleteP(Produtos *lista, const char* nomeProduto){
+    int i = 0, k;
+    printf("=====================Loja NerdZ===================\n");
+    printf("=====================Menu Remover=================\n");
+    if (lista == NULL) 
+        return 0;
+        
+    if (lista->tamanho == 0) 
+        return 0;
+
+    while(i < lista->tamanho && strcmp(lista->produtos[i].nome, nomeProduto)!= 0)
+        i++;
+    if (i == lista->tamanho) 
+        return 0;
+
+    for(k = i; k < lista->tamanho-1; k++)
+        lista->produtos[k] = lista->produtos[k+1];
+
+    lista->tamanho--;
+
+    printf("Produto removido com sucesso\n");
+    system("pause");
+    return 1;
 }
 
 #endif
