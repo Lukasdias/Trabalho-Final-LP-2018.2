@@ -1,10 +1,10 @@
 3
-canecas ttt
+canecas azuis
 50,55
 100
-Lukas Perebinha
+camisas vermelhas
 67,00
 6
-Camisas eu
+Camisas verdes 
 78,88
 20
