@@ -47,8 +47,8 @@ void menu(Clientes *lista_C, Produtos *lista_P){
          printf("============Loja NerdZ============\n");
          printf("[1] *** menu produtos\n");
          printf("[2] *** menu clientes\n");
-         printf("[3] *** historico de compras");
-         printf("[0] *** salvar sair (somente aqui e possivel salvar dados)\n");
+         printf("[3] *** historico de compras\n");
+         printf("[0] *** salvar e sair (somente aqui e possivel salvar dados)\n");
          printf("==================================\n");
          printf("Escolha: ");
          scanf("%d", &ch);
