@@ -1,7 +1,10 @@
-2
-caneca 1
-15,00
-23
+3
+canecas ttt
+50,55
+100
 Lukas Perebinha
 67,00
 6
+Camisas eu
+78,88
+20

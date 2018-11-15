@@ -127,10 +127,10 @@ void addP(Produtos *lista){
     printf("Nome: ");
     scanf("%[^\n]*c", produto.nome);
     fflush(stdin);
-    printf("Valor: ");
+    printf("Valor(inteiro ou float): ");
     scanf("%f", &produto.valor);
     fflush(stdin);
-    printf("Qtd em estoque: ");
+    printf("Qtd em estoque(inteiro): ");
     scanf("%d", &produto.qtd);
     fflush(stdin);
     adicionar_produtos(lista, produto);
@@ -185,21 +185,30 @@ void editP(Produtos *lista){
 
 int deleteP(Produtos *lista, const char* nomeProduto){
     int i = 0, k;
-    printf("=====================Loja NerdZ===================\n");
-    printf("=====================Menu Remover=================\n");
-    if (lista == NULL) 
+    if (lista == NULL){
+        printf("Lista de produtos %c nula!\n", 130);
+        system("pause");
         return 0;
-        
-    if (lista->tamanho == 0) 
-        return 0;
+    }
 
-    while(i < lista->tamanho && strcmp(lista->produtos[i].nome, nomeProduto)!= 0)
+    if (lista->tamanho == 0){
+        printf("Lista de produtos vazia!\n");
+        system("pause");
+        return 0;
+    }
+    while(i < lista->tamanho && strcmp(lista->produtos[i].nome, nomeProduto)!= 0){
         i++;
-    if (i == lista->tamanho) 
-        return 0;
+    }
 
-    for(k = i; k < lista->tamanho-1; k++)
+    if (i == lista->tamanho){
+        printf("Produto invalido!\n");
+        system("pause");
+        return 0;
+    }
+
+    for(k = i; k < lista->tamanho-1; k++){
         lista->produtos[k] = lista->produtos[k+1];
+    }
 
     lista->tamanho--;
 

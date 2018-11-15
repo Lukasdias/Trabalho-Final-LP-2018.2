@@ -151,7 +151,7 @@ void listC(Clientes *lista){
     int i;
     system("cls");
     for (i = 0; i < lista->tamanho; i++){
-        printf("Cliente %d\n", i);
+        printf("Cliente %d\n", i + 1);
         printf("Nome: %s\n", lista->clientes[i].nome);
         printf("Telefone: %s\n", lista->clientes[i].telefone);
         printf("Endereco: %s\n", lista->clientes[i].endereco);
@@ -169,8 +169,8 @@ void editC(Clientes *lista){
     scanf("%[^\n]*c", user);
     fflush(stdin);
 
-    for(i = 0; i < lista->tamanho; i++)
-        if(strcmp(user, lista->clientes[i].nome) == 0)
+    for(i = 0; i < lista->tamanho; i++){
+        if(strcmp(user, lista->clientes[i].nome) == 0){
 
             printf("Cliente localizado!\n");
             printf("Novo nome:");
@@ -196,33 +196,42 @@ void editC(Clientes *lista){
             salvar_clientes(lista);
             system("pause");
             return;
-        printf("O cliente digitado n existe!\n");
-        system("pause");
+        }
+    }
+
+    printf("O cliente digitado n existe!\n");
+    system("pause");
 }
 
 int deleteC(Clientes *lista, const char* nomeCliente){
     int i = 0, k;
 
-    if (lista == NULL)
-        printf("Erro, nao foi possivel excluir o cliente");
+    if (lista == NULL){
+        printf("Erro, nao foi possivel excluir o cliente\n");
         system("pause");
         return 0;
+    }
 
-    if (lista->tamanho == 0)
-        printf("Erro, nao foi possivel excluir o cliente");
+    if (lista->tamanho == 0){
+        printf("Erro, nao foi possivel excluir o cliente\n");
         system("pause");
         return 0;
+    }
 
-    while(i < lista->tamanho && strcmp (lista->clientes[i].nome, nomeCliente) != 0)
+    while(i < lista->tamanho && strcmp (lista->clientes[i].nome, nomeCliente) != 0){
         i++;
+    }
 
-    if (i == lista->tamanho)
-        printf("Erro, nao foi possivel excluir o cliente");
+    if (i == lista->tamanho){
+        printf("Erro, nao foi possivel excluir o cliente\n");
         system("pause");
         return 0;
+    }
 
-    for(k = i;k < lista->tamanho - 1; k++)
+    for(k = i;k < lista->tamanho - 1; k++){
         lista->clientes[k] = lista->clientes[k+1];
+    }
+        
     lista->tamanho--;
     printf("Cliente removido com sucesso\n");
     system("pause");

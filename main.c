@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
 #include <conio.h>
@@ -6,8 +7,8 @@
 #include "modulos/clientes.h"
 #include "modulos/produtos.h"
 
-//#define COLOR_RED "\x1b[31m"
-//#define COLOR_RESET "\x1b[0m"
+#define COLOR_RED "\x1b[31m"
+#define COLOR_RESET "\x1b[0m"
 
 void menu(Clientes *lista_C, Produtos *lista_P);
 void menuProduto(Produtos *lista);
@@ -24,8 +25,6 @@ int deleteP(Produtos *, const char* nomeProduto);
 int deleteC(Clientes *, const char* nomeCliente);
 
 int main(void){
-    system("color 12");
-
     Clientes *lista_c;
     Produtos *lista_p;
 
@@ -45,10 +44,10 @@ void menu(Clientes *lista_C, Produtos *lista_P){
      while(podeContinuar == true){
          system("cls");
          printf("============Loja NerdZ============\n");
-         printf("[1] *** menu produtos\n");
-         printf("[2] *** menu clientes\n");
-         printf("[3] *** historico de compras\n");
-         printf("[0] *** salvar e sair (somente aqui e possivel salvar dados)\n");
+         printf("[1] *** Menu produtos\n");
+         printf("[2] *** Menu clientes\n");
+         printf("[3] *** Compras feitas \n");
+         printf("[0] *** Salvar && Sair (somente aqui e possivel salvar os dados)\n");
          printf("==================================\n");
          printf("Escolha: ");
          scanf("%d", &ch);
@@ -82,7 +81,7 @@ void menuProduto(Produtos *lista){
          printf("[2] *** Remover Produtos\n");
          printf("[3] *** Listar Produtos\n");
          printf("[4] *** Editar Produtos\n");
-         printf("[0] *** voltar ao menu principal\n");
+         printf("[0] *** Voltar ao menu principal\n");
          printf("===================================\n");
          printf("Escolha: ");
         scanf("%d", &ch);
@@ -115,10 +114,11 @@ void menuProduto(Produtos *lista){
 }
 
 void menuCliente(Clientes *lista){
+    system("cls");
+
     int podeContinuar = true, ch;
     char *dados = (char *) malloc (100 * sizeof(char));
-     system("cls");
-     while(podeContinuar == true){
+    while(podeContinuar == true){
 
         system("cls");
          printf("============Loja NerdZ============\n");
@@ -126,7 +126,7 @@ void menuCliente(Clientes *lista){
          printf("[2] *** Remover Clientes\n");
          printf("[3] *** Listar Clientes\n");
          printf("[4] *** Editar Clientes\n");
-         printf("[0] *** voltar ao menu principal\n");
+         printf("[0] *** Voltar ao menu principal\n");
          printf("===================================\n");
         printf("Escolha: ");
         scanf("%d", &ch);
