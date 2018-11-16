@@ -7,6 +7,8 @@ struct produto {
     char nome[50];
     float valor;
     int qtd;
+    char horas[9];
+    char datas[9];
 };
 
 typedef struct {
@@ -77,11 +79,11 @@ void popular_produtos(Produtos *lista){
             fscanf(arquivo, "%[^\n]%*c\n", produto.nome);
             fscanf(arquivo, "%f\n", &produto.valor);
             fscanf(arquivo, "%d\n", &produto.qtd);
-
+            fscanf(arquivo, "%[^\n]%*c\n", produto.datas);
+            fscanf(arquivo, "%[^\n]%*c\n", produto.horas);
             adicionar_produtos(lista, produto);
         }
     fclose(arquivo);
-    setlocale(LC_ALL, "");
 }
 
 void salvar_produtos(Produtos *lista){
@@ -99,6 +101,8 @@ void salvar_produtos(Produtos *lista){
         fprintf(arquivo, "%s\n", lista->produtos[i].nome);
         fprintf(arquivo, "%.2f\n", lista->produtos[i].valor);
         fprintf(arquivo, "%d\n", lista->produtos[i].qtd);
+        fprintf(arquivo, "%s\n", lista->produtos[i].datas);
+        fprintf(arquivo, "%s\n", lista->produtos[i].horas);
     }
 
     fclose(arquivo);
@@ -120,6 +124,8 @@ int tamanhoArquivo2(const char* nome_arquivo)
 
 void addP(Produtos *lista){
     struct produto produto;
+    char data[9];
+    char horario[9];
     system("cls");
     printf("======================Loja NerdZ===================\n");
     printf("=====================Menu Adicionar=================\n");
@@ -133,6 +139,10 @@ void addP(Produtos *lista){
     printf("Qtd em estoque(inteiro): ");
     scanf("%d", &produto.qtd);
     fflush(stdin);
+    _strdate(data);
+    _strtime(horario);
+    strcpy(produto.datas, data);
+    strcpy(produto.horas, horario);
     adicionar_produtos(lista, produto);
 }
 
@@ -144,8 +154,9 @@ void listP(Produtos *lista){
     for (i = 0; i < lista->tamanho; i++){
         printf("Produto %d\n", i + 1);
         printf("Nome: %s\n", lista->produtos[i].nome);
-        printf("Valor %f\n", lista->produtos[i].valor);
+        printf("Valor %.2f\n", lista->produtos[i].valor);
         printf("Quantidade em estoque: %d\n", lista->produtos[i].qtd);
+        printf("Data : %s\nHorario: %s\n", lista->produtos[i].datas, lista->produtos[i].horas);
     }
     system("pause");
 }
@@ -153,6 +164,8 @@ void listP(Produtos *lista){
 void editP(Produtos *lista){
     int i, j;
     char *user = (char *) malloc(100 * sizeof(char));
+    char data[9];
+    char horario[9];
     system("cls");
     printf("=====================Loja NerdZ===================\n");
     printf("=====================Menu Editar=================\n");
@@ -172,6 +185,12 @@ void editP(Produtos *lista){
             printf("Nova Quantidade em estoque: ");
             scanf("%d", &lista->produtos[i].qtd);
             fflush(stdin);
+            
+            _strdate(data);
+            _strtime(horario);
+            strcpy(lista->produtos[i].datas, data);
+            strcpy(lista->produtos[i].horas, horario);
+            
             salvar_produtos(lista);
 
             system("pause");

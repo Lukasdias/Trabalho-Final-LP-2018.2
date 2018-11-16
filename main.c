@@ -1,9 +1,10 @@
 #include <stdio.h>
-#include <ctype.h>
+#include <time.h>
 #include <string.h>
 #include <stdlib.h>
 #include <conio.h>
 #include <stdbool.h>
+
 #include "modulos/clientes.h"
 #include "modulos/produtos.h"
 
@@ -25,6 +26,8 @@ int deleteP(Produtos *, const char* nomeProduto);
 int deleteC(Clientes *, const char* nomeCliente);
 
 int main(void){
+    setlocale(LC_ALL,"portuguese");
+    
     Clientes *lista_c;
     Produtos *lista_p;
 

@@ -8,6 +8,8 @@ struct cliente {
     char telefone[20];
     char cidade[20];
     char estado[15];
+    char datas[9];
+    char horas[9];
 };
 
 typedef struct {
@@ -81,7 +83,8 @@ void popular_clientes(Clientes *lista){
         fscanf(arquivo, "%[^\n]%*c\n", cliente.endereco);
         fscanf(arquivo, "%[^\n]%*c\n", cliente.cidade);
         fscanf(arquivo, "%[^\n]%*c\n", cliente.estado);
-
+        fscanf(arquivo, "%[^\n]%*c\n", cliente.datas);
+        fscanf(arquivo, "%[^\n]%*c\n", cliente.horas);
         adicionar_clientes(lista, cliente);
     }
 
@@ -104,6 +107,8 @@ void salvar_clientes(Clientes *lista){
         fprintf(arquivo, "%s\n", lista->clientes[i].endereco);
         fprintf(arquivo, "%s\n", lista->clientes[i].cidade);
         fprintf(arquivo, "%s\n", lista->clientes[i].estado);
+        fprintf(arquivo, "%s\n", lista->clientes[i].datas);
+        fprintf(arquivo, "%s\n", lista->clientes[i].horas);
     }
 
     fclose(arquivo);
@@ -125,23 +130,36 @@ int tamanhoArquivo(const char* nome_arquivo)
 
 void addC(Clientes *lista){
     struct cliente cliente;
+    
+    char data[9];
+    char horario[9];
+
     system("cls");
     fflush(stdin);
     printf("Nome: ");
     scanf("%[^\n]*c", cliente.nome);
     fflush(stdin);
+
     printf("Telefone: ");
     scanf("%[^\n]*c", cliente.telefone);
     fflush(stdin);
+
     printf("Endereco: ");
     scanf("%[^\n]*c", cliente.endereco);
     fflush(stdin);
+
     printf("Cidade: ");
     scanf("%[^\n]*c", cliente.cidade);
     fflush(stdin);
+
     printf("Estado: ");
     scanf("%[^\n]*c", cliente.estado);
     fflush(stdin);
+
+    _strdate(data);
+    _strtime(horario);
+    strcpy(cliente.datas, data);
+    strcpy(cliente.horas, horario);
 
     adicionar_clientes(lista, cliente);
     system("pause");
@@ -157,12 +175,15 @@ void listC(Clientes *lista){
         printf("Endereco: %s\n", lista->clientes[i].endereco);
         printf("Cidade: %s\n", lista->clientes[i].cidade);
         printf("Estado: %s\n", lista->clientes[i].estado);
+        printf("Data : %s\nHorario: %s\n", lista->clientes[i].datas, lista->clientes[i].horas);
     }
     system("pause");
 }
 void editC(Clientes *lista){
     int i;
     char *user = (char *) malloc (100 * sizeof(char));
+    char data[9];
+    char horario[9];
 
     system("cls");
     printf("Informe um cliente a ser buscado em nossa loja: ");
@@ -192,6 +213,12 @@ void editC(Clientes *lista){
             printf("Novo Estado: ");
             scanf("%[^\n]*c", lista->clientes[i].estado);
             fflush(stdin);
+
+            _strdate(data);
+            _strtime(horario);
+            
+            strcpy(lista->clientes[i].datas, data);
+            strcpy(lista->clientes[i].horas, horario);
 
             salvar_clientes(lista);
             system("pause");
