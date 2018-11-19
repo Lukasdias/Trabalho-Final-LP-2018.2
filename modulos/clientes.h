@@ -1,6 +1,8 @@
+///////////////////////////////////////////////
+///////////////FUNÇÕES CLIENTES/////////////////
+/////////////////////////////////////////////
 #ifndef CLIENTES_H
 #define CLIENTES_H
-#include <stdlib.h>
 
 struct cliente {
     char nome[50];
@@ -102,6 +104,7 @@ void salvar_clientes(Clientes *lista){
 
     int i;
     for (i = 0; i < lista->tamanho; i++){
+        
         fprintf(arquivo, "%s\n", lista->clientes[i].nome);
         fprintf(arquivo, "%s\n", lista->clientes[i].telefone);
         fprintf(arquivo, "%s\n", lista->clientes[i].endereco);
@@ -114,8 +117,7 @@ void salvar_clientes(Clientes *lista){
     fclose(arquivo);
 }
 
-int tamanhoArquivo(const char* nome_arquivo)
-{
+int tamanhoArquivo(const char* nome_arquivo){
     FILE *arquivo = fopen(nome_arquivo, "r");
 
     if(arquivo == NULL)
@@ -135,6 +137,11 @@ void addC(Clientes *lista){
     char horario[9];
 
     system("cls");
+    printf("=================================Loja NerdZ====================================\n");
+    printf("================================NOVO CLIENTE===================================\n");
+    printf("===============================================================================\n");
+
+    
     fflush(stdin);
     printf("Nome: ");
     scanf("%[^\n]*c", cliente.nome);
@@ -167,8 +174,15 @@ void addC(Clientes *lista){
 
 void listC(Clientes *lista){
     int i;
+    
     system("cls");
+    printf("================================Loja NerdZ=====================================\n");
+    printf("===============================MENU LISTAR=====================================\n");
+    printf("=============================CLIENTES LISTADOS=================================\n");
+    printf("===============================================================================\n");
+
     for (i = 0; i < lista->tamanho; i++){
+        
         printf("Cliente %d\n", i + 1);
         printf("Nome: %s\n", lista->clientes[i].nome);
         printf("Telefone: %s\n", lista->clientes[i].telefone);
@@ -176,9 +190,11 @@ void listC(Clientes *lista){
         printf("Cidade: %s\n", lista->clientes[i].cidade);
         printf("Estado: %s\n", lista->clientes[i].estado);
         printf("Data : %s\nHorario: %s\n", lista->clientes[i].datas, lista->clientes[i].horas);
+        printf("===============================================================================\n");
     }
     system("pause");
 }
+
 void editC(Clientes *lista){
     int i;
     char *user = (char *) malloc (100 * sizeof(char));
@@ -186,7 +202,11 @@ void editC(Clientes *lista){
     char horario[9];
 
     system("cls");
-    printf("Informe um cliente a ser buscado em nossa loja: ");
+    printf("==================================Loja NerdZ===================================\n");
+    printf("=================================MENU CLIENTE==================================\n");
+    printf("================================EDITAR CLIENTE=================================\n");
+    printf("===============================================================================\n");
+    printf("Informe o nome do cliente a ser buscado: ");
     scanf("%[^\n]*c", user);
     fflush(stdin);
 
@@ -230,8 +250,17 @@ void editC(Clientes *lista){
     system("pause");
 }
 
-int deleteC(Clientes *lista, const char* nomeCliente){
+int deleteC(Clientes *lista){
     int i = 0, k;
+    char *dados = (char *) malloc (100 * sizeof(char));
+
+    system("cls");
+    printf("==================================Loja NerdZ===================================\n");
+    printf("=================================MENU CLIENTE==================================\n");
+    printf("================================DELETAR CLIENTE================================\n");
+    printf("===============================================================================\n");
+     printf("Informe o nome do cliente a ser buscado: ");
+    scanf("%[^\n]*c", dados);
 
     if (lista == NULL){
         printf("Erro, nao foi possivel excluir o cliente\n");
@@ -245,23 +274,22 @@ int deleteC(Clientes *lista, const char* nomeCliente){
         return 0;
     }
 
-    while(i < lista->tamanho && strcmp (lista->clientes[i].nome, nomeCliente) != 0){
-        i++;
-    }
-
     if (i == lista->tamanho){
         printf("Erro, nao foi possivel excluir o cliente\n");
         system("pause");
         return 0;
     }
 
-    for(k = i;k < lista->tamanho - 1; k++){
-        lista->clientes[k] = lista->clientes[k+1];
+    for (i = 0; i < lista->tamanho; i++){
+        if (strcmp(lista->clientes[i].nome, dados) == 0){
+            apagar_cliente(lista, i);
+            printf("Produto removido com sucesso\n");
+            system("pause");
+        }
     }
-        
-    lista->tamanho--;
     printf("Cliente removido com sucesso\n");
     system("pause");
     return 1;
 }
+
 #endif
