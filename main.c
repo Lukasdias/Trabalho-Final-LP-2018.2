@@ -10,13 +10,14 @@
 #include "modulos/produtos.h"
 #include "modulos/carrinho.h"
 
-#define COLOR_RED "\x1b[31m"
-#define COLOR_RESET "\x1b[0m"
+//#define COLOR_RED "\x1b[31m"
+//#define COLOR_RESET "\x1b[0m"0
 
 void menu(Clientes *, Produtos *, Carrinho *);
-void menuProduto(Produtos *lista);
-void menuCliente(Clientes *lista);
-void menuCarrinho(Carrinho *lista);
+void menuProduto(Produtos *);
+void menuCliente(Clientes *);
+void menuVendas(Carrinho *, Produtos *);
+//void menuCarrinho(Carrinho *lista);
 
 void addC(Clientes *);
 void addP(Produtos *);
@@ -32,13 +33,12 @@ int deleteC(Clientes *);
 
 int main(void){
     setlocale(LC_ALL,"");
-    system ("color F9");
+    //system ("color F9");
 
     Clientes *lista_c;
     Produtos *lista_p;
     Carrinho *lista_carrinho;
 
-    //lista_carr = criar_carrinho();
     lista_c = criar_clientes();
     lista_p = criar_produtos();
     lista_carrinho = criar_carrinho();
@@ -51,7 +51,7 @@ int main(void){
     //printf(COLOR_RESET);
 }
 
-void menu(Clientes *lista_C, Produtos *lista_P, Carrinho *lista_Cr){
+void menu(Clientes *lista_C, Produtos *lista_P, Carrinho *lista_Carrinho){
     int podeContinuar = true, ch;
      while(podeContinuar == true){
          system("cls");
@@ -73,16 +73,13 @@ void menu(Clientes *lista_C, Produtos *lista_P, Carrinho *lista_Cr){
                 menuCliente(lista_C);
                 break;
             case 3:
-                menuCarrinho(lista_Cr);
+                menuVendas(lista_Carrinho, lista_P);
                 break;
             case 0:
                 podeContinuar = false;
                 armazenar_clientes(lista_C);
                 armazenar_produtos(lista_P);
-                //armazenar_carrinho(lista_Cr);
                 //system("pause");
-                break;
-            default:
                 break;
         }
      }
@@ -125,12 +122,11 @@ void menuProduto(Produtos *lista){
 }
 
 void menuCliente(Clientes *lista){
-    system("cls");
-
     int podeContinuar = true, ch;
     char *dados = (char *) malloc (100 * sizeof(char));
     while(podeContinuar == true){
 
+    system("cls");
     printf("==================================Loja NerdZ===================================\n");
     printf("[1] *** Adicionar Clientes\n");
     printf("[2] *** Remover Clientes\n");
@@ -162,38 +158,39 @@ void menuCliente(Clientes *lista){
     }
 }
 
-void menuCarrinho(Carrinho *lista){
+void menuVendas(Carrinho *lista, Produtos *listaP){
     int podeContinuar = true,ch;
 
-    char *dados = (char *) malloc (100 * sizeof(char));
     while(podeContinuar == true){
+        system("cls");
+        printf("==================================Loja NerdZ===================================\n");
+        printf("[1] *** Adicionar no Carrinho\n");
+        printf("[2] *** Remover do Carrinho\n");
+        printf("[3] *** Listar Carrinho\n");
+        printf("[4] *** Ver Compras realizadas\n");
+        printf("[0] *** Voltar ao menu principal\n");
+        printf("===============================================================================\n");
+        printf("Escolha: ");
+        scanf("%d", &ch);
+        fflush(stdin);
 
-    printf("==================================Loja NerdZ===================================\n");
-    printf("[1] *** Adicionar no Carrinho\n");
-    printf("[2] *** Remover do Carrinho\n");
-    printf("[3] *** Listar Carrinho\n");
-    printf("[4] *** Ver Compras realizadas\n");
-    printf("[0] *** Voltar ao menu principal\n");
-    printf("===============================================================================\n");
-    printf("Escolha: ");
-    scanf("%d", &ch);
-    fflush(stdin);
-
-    switch (ch){
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 0:
-                podeContinuar = false;
-                break;
-        }
+        switch (ch){
+                case 1:
+                    add_carrinho(lista, listaP);
+                    break;
+                case 2:
+                    delete_carrinho(lista);
+                    break;
+                case 3:
+                    listar_Carrinho(lista);
+                    break;
+                case 4:
+                    break;
+                case 0:
+                    podeContinuar = false;
+                    break;
+            }
 }
-
 }
 
 

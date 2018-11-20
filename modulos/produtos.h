@@ -20,6 +20,7 @@ typedef struct {
 void addP(Produtos *);
 void listP(Produtos *);
 void editP(Produtos *);
+
 Produtos *criar_produtos();
 void armazenar_produtos(Produtos *);
 
@@ -150,6 +151,7 @@ void addP(Produtos *lista){
 
 void listP(Produtos *lista){
     int i;
+    
     system("cls");
     printf("================================Loja NerdZ=====================================\n");
     printf("===============================MENU LISTAR=====================================\n");

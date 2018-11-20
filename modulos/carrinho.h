@@ -6,35 +6,38 @@
 
 #include "produtos.h"
 
-struct vendas{
-    int id;
+struct produtoCarrinho{
     char nome[100];
-    double valorInicial;
+    double preco;
     int qtd;
 };
 
 typedef struct {
     int tamanho;
-    struct vendas *produtos;
+    struct produtoCarrinho *produtos;
     double desconto;
     double descontoP;
-    double valorInicial;
-    double valorFinal;
+    double preco;
+    double precoFinal;
 } Carrinho;
 
 Carrinho *criar_carrinho();
+void apagar_carrinho(Carrinho *);
 void salvar_itens_carrinho(Carrinho *);
-void adicionar_ao_carrinho(Carrinho *);
-void salvar_carrinho(Carrinho *);
-void adicionar_itens_carrinho(Carrinho *, struct vendas produto, int quantidade);
+void adicionar_vendido_carrinho(Carrinho *, struct produtoCarrinho produto);
+void adicionar_itens_carrinho(Carrinho *, struct produtoCarrinho produto, int quantidade);
+void remover_produto_carrinho(Carrinho *, int);
+void add_carrinho(Carrinho *, Produtos *);
+void delete_carrinho(Carrinho *);
+void listar_Carrinho(Carrinho *);
 
 Carrinho *criar_carrinho(){
     Carrinho *lista = (Carrinho *) malloc(sizeof(Carrinho));
     lista->tamanho = 0;
-    lista->desconto = 0.00;
-    lista->descontoP = 0.00;
-    lista->valorInicial = 0.00;
-    lista->valorFinal = 0.00;
+    lista->produtos = NULL;
+    lista->desconto = 0;
+    lista->descontoP = 0;
+    lista->precoFinal = 0;
     return lista;
 }
 
@@ -43,59 +46,41 @@ void apagar_carrinho(Carrinho *lista){
         printf("O carrinho precisa ser inicializado primeiro.\n");
         return;
     }
-
     free(lista->produtos);
     free(lista);
 }
 
-void add_vendido_carrinho(Carrinho *lista, struct vendas produto){
+void adicionar_vendido_carrinho(Carrinho *lista, struct produtoCarrinho produto){
     if (lista == NULL){
        printf("O carrinho precisa ser inicializado primeiro.\n");
         return;
     }
 
-    lista->produtos = (struct vendas *) realloc(lista->produtos, (lista->tamanho + 1) * sizeof(struct vendas));
-    lista->produtos[lista->tamanho].id = lista->tamanho;
+    lista->produtos = (struct produtoCarrinho *) realloc(lista->produtos, (lista->tamanho + 1) * sizeof(struct produtoCarrinho));
     strcpy(lista->produtos[lista->tamanho].nome, produto.nome);
-    lista->produtos[lista->tamanho].valorInicial = produto.valorInicial;
+    lista->produtos[lista->tamanho].preco = produto.preco;
     lista->produtos[lista->tamanho].qtd = produto.qtd;
-    lista->valorInicial += produto.valorInicial * produto.qtd;
-    lista->valorFinal = lista->valorInicial - ((lista->valorInicial * lista->descontoP) / 100);
+    lista->preco += produto.preco * produto.qtd;
+    lista->precoFinal = lista->preco - ((lista->preco * lista->descontoP) / 100);
     lista->tamanho++;
 }
 
-void adicionar_itens_carrinho(Carrinho *lista, struct vendas produto, int quantidade){
+void adicionar_itens_carrinho(Carrinho *lista, struct produtoCarrinho produto, int quantidade){
     if (lista == NULL){
         printf("O carrinho precisa ser inicializado primeiro.\n");
         return;
     }
 
-    lista->produtos = (struct vendas *) realloc(lista->produtos, (lista->tamanho + 1) * sizeof(struct vendas));
-    lista->produtos[lista->tamanho].id = lista->tamanho;
+    lista->produtos = (struct produtoCarrinho *) realloc(lista->produtos, (lista->tamanho + 1) * sizeof(struct produtoCarrinho));
     strcpy(lista->produtos[lista->tamanho].nome, produto.nome);
-    lista->produtos[lista->tamanho].valorInicial = produto.valorInicial;
+    lista->produtos[lista->tamanho].preco = produto.preco;
     lista->produtos[lista->tamanho].qtd = quantidade;
-    lista->valorInicial += produto.valorInicial * quantidade;
-    lista->valorFinal = lista->valorInicial - ((lista->valorInicial * lista->descontoP) / 100);
+    lista->preco += produto.preco * quantidade;
+    lista->precoFinal = lista->preco - ((lista->preco * lista->descontoP) / 100);
     lista->tamanho++;
-    printf("Produtos localizado e adicionado ao carrinho!\n");
 
-}
+    printf("Produtos adicionado ao carrinho!\n");
 
-void remover_produto_carrinho(Carrinho *lista, int index){
-    if (lista == NULL){
-        printf("O carrinho precisa ser inicializado primeiro.\n");
-        return;
-    }
-
-    lista->valorInicial -= lista->produtos[index].valorInicial;
-    lista->valorFinal = lista->valorInicial - ((lista->valorInicial * lista->descontoP) / 100);
-
-    for (; index < lista->tamanho - 1; index++){
-        lista->produtos[index] = lista->produtos[index + 1];
-    }
-    lista->produtos = (struct vendas *) realloc(lista->produtos, (lista->tamanho - 1) * sizeof(struct vendas));
-    lista->tamanho--;
 }
 
 void definir_desconto(Carrinho *lista, int descontoP){
@@ -104,10 +89,133 @@ void definir_desconto(Carrinho *lista, int descontoP){
         return;
     }
 
-    double desconto = (double) (lista->valorInicial * descontoP) / 100;
+    double desconto = (lista->preco * descontoP) / 100;
     lista->descontoP = descontoP;
     lista->desconto = desconto;
-    lista->valorFinal = lista->valorInicial - desconto;
+    lista->precoFinal = lista->preco - desconto;
 }
 
+void remover_produto_carrinho(Carrinho *lista, int id){
+    if (lista == NULL){
+        return;
+    }
+
+    lista->preco -= (lista->produtos[id].preco * lista->produtos[id].qtd);
+    lista->precoFinal = lista->preco - ((lista->preco * lista->descontoP) / 100);
+
+    for (; id < lista->tamanho - 1; id++){
+        lista->produtos[id] = lista->produtos[id + 1];
+    }
+    lista->produtos = (struct produtoCarrinho *) realloc(lista->produtos, (lista->tamanho - 1) * sizeof(struct produtoCarrinho));
+    lista->tamanho--;
+}
+
+void add_carrinho(Carrinho *lista, Produtos *lista_p){
+   struct produtoCarrinho produto;
+    int i, desconto;
+
+    system("cls");
+    printf("=================================Loja NerdZ====================================\n");
+    printf("==================================Carrinho=====================================\n");
+    printf("===============================================================================\n");
+
+    printf("Informe o nome do produto a ser adicionado ao carrinho: ");
+    scanf("%[^\n]*c", produto.nome);
+    fflush(stdin);
+    for(i = 0; i < lista_p->tamanho; i++){
+        if (strcmp(lista_p->produtos[i].nome, produto.nome) == 0){
+            printf("Produto localizado!\n");
+            produto.preco = lista_p->produtos[i].valor;
+            printf("Quantos %s deseja adicionar? ", produto.nome);
+            scanf("%d", &produto.qtd);
+            fflush(stdin);
+            while((lista_p->produtos[i].qtd - produto.qtd) < 0){
+                printf("Quantidade requisitada maior que a disponivel\n");
+                printf("Voce pediu %d unidades, sendo que nos temos apenas %d unidades\n", produto.qtd, lista_p->produtos[i].qtd);
+                printf("Digite a quantidade novamente!\n");
+                printf("Quantidade: ");
+                scanf("%d", &produto.qtd);
+                fflush(stdin);
+            };
+            lista_p->produtos[i].qtd -= produto.qtd;
+            printf("definir desconto de: ");
+            scanf("%d", &desconto);
+            while((desconto > 100)){
+                printf("O produto ja esta de gratuito com esse desconto senhor!\n");
+                printf("Digite (100 %) ou uma quantia menor!");
+                printf("Desconto: ");
+                scanf("%d", &desconto);
+            }
+            adicionar_itens_carrinho(lista, produto, produto.qtd);
+            //definir_desconto(lista, desconto);
+            system("pause");
+            return;
+        }
+    }
+
+    if (i == lista_p->tamanho){
+        printf("Produto nao encontrado");
+        return;
+    }
+
+
+}
+
+void delete_carrinho(Carrinho *lista){
+    struct produtoCarrinho produto;
+    int i;
+    system("cls");
+    printf("=================================Loja NerdZ====================================\n");
+    printf("==================================Carrinho=====================================\n");
+    printf("==================================DELETAR======================================\n");
+
+    printf("Informe o nome do produto a ser removido do carrinho: ");
+    scanf("%[^\n]*c", produto.nome);
+    for(i = 0; i < lista->tamanho; i++){
+        if (strcmp(lista->produtos[i].nome, produto.nome) == 0){
+            remover_produto_carrinho(lista, i);
+            printf("Produto removido!\n");
+            system("pause");
+            return;
+        }
+    }
+    printf("Produto nao encontrado\n");
+    system("pause");
+}
+
+void listar_Carrinho(Carrinho *lista){
+    int i, t;
+
+    if (lista == NULL){
+        printf("Lista vazia\n");
+        return;
+    }
+    system("cls");
+    printf("=================================Loja NerdZ====================================\n");
+    printf("==================================Carrinho=====================================\n");
+    printf("===================================LISTAR======================================\n");
+
+    for(i = 0; i < lista->tamanho;i++){
+        printf("Produto no Carrinho %d\n", i + 1);
+        printf("Nome: %s\n", lista->produtos[i].nome);
+        printf("Valor: %.2lf\n", lista->produtos[i].preco);
+        printf("Quantidade requisitada: %d\n", lista->produtos[i].qtd);
+        printf("===============================================================================\n");
+    }
+    if (i == lista->tamanho){
+            printf("*************************\n");
+            printf("Valor total %lf\n", lista->precoFinal);
+            printf("*************************\n");
+            t = 1;
+    }
+
+    if (i == 0 && t !=1 ){
+        lista->precoFinal = 0;
+        printf("*************************\n");
+        printf("Valor total %lf\n", lista->precoFinal);
+        printf("*************************\n");
+    }
+    system("pause");
+
+}
 #endif
