@@ -28,7 +28,7 @@ void popular_carrinho(Carrinho *, struct produtoCarrinho produto);
 void adicionar_carrinho(Carrinho *, struct produtoCarrinho produto, int quantidade);
 void remover_produto_carrinho(Carrinho *, int);
 void add_carrinho(Carrinho *, Produtos *);
-void delete_carrinho(Carrinho *);
+void delete_carrinho(Carrinho *, Produtos *);
 void listar_Carrinho(Carrinho *);
 
 Carrinho *criar_carrinho(){
@@ -85,12 +85,13 @@ void adicionar_carrinho(Carrinho *lista, struct produtoCarrinho produto, int qua
 }
 
 void definir_desconto(Carrinho *lista, int descontoP){
+    double desconto;
     if (lista == NULL){
         printf("O carrinho precisa ser inicializado primeiro.\n");
         return;
     }
 
-    double desconto = (lista->preco * descontoP) / 100;
+    desconto = (lista->preco * descontoP) / 100;
     lista->descontoP = descontoP;
     lista->desconto = desconto;
     lista->precoFinal = lista->preco - desconto;
@@ -150,22 +151,23 @@ void add_carrinho(Carrinho *lista, Produtos *lista_p){
                 scanf("%d", &desconto);
                 fflush(stdin);
             }
-            adicionar_carrinho(lista, produto, quantidade);
             definir_desconto(lista, desconto);
+            adicionar_carrinho(lista, produto, quantidade);
             system("pause");
             return;
         }
     }
 
     if (i == lista_p->tamanho){
-        printf("Produto nao encontrado");
+        printf("Produto nao encontrado\n");
+        system("pause");
         return;
     }
 
 
 }
 
-void delete_carrinho(Carrinho *lista){
+void delete_carrinho(Carrinho *lista, Produtos *lista_p){
     struct produtoCarrinho produto;
     int i;
     system("cls");
@@ -177,6 +179,7 @@ void delete_carrinho(Carrinho *lista){
     scanf("%[^\n]*c", produto.nome);
     for(i = 0; i < lista->tamanho; i++){
         if (strcmp(lista->produtos[i].nome, produto.nome) == 0){
+            lista_p->produtos[i].qtd += lista->produtos[i].qtd;
             remover_produto_carrinho(lista, i);
             printf("Produto removido!\n");
             system("pause");
@@ -207,9 +210,9 @@ void listar_Carrinho(Carrinho *lista){
         printf("===============================================================================\n");
     }
     if (i == lista->tamanho){
-            printf("*************************\n");
+            printf("***************************************************************************\n");
             printf("Valor total %lf\n", lista->precoFinal);
-            printf("*************************\n");
+            printf("***************************************************************************\n");
             t = 1;
     }
     system("pause");

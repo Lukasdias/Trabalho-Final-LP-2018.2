@@ -49,7 +49,6 @@ int main(void){
 
     popular_clientes(lista_c);
     popular_produtos(lista_p);
-    popular_vendas(lista_vendas);
 
     menu(lista_c, lista_p, lista_carrinho, lista_vendas);
 
@@ -186,7 +185,7 @@ void menuVendas(Carrinho *lista, Produtos *listaP, Vendas *lista_vendas, Cliente
                     add_carrinho(lista, listaP);
                     break;
                 case 2:
-                    delete_carrinho(lista);
+                    delete_carrinho(lista, listaP);
                     break;
                 case 3:
                     listar_Carrinho(lista);

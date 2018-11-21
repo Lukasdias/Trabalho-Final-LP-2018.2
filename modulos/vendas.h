@@ -15,8 +15,6 @@ struct comprador {
 
 struct venda {
     int id;
-    char horario[9];
-    char data[9];
     struct comprador cliente;
     Carrinho carrinho;
 };
@@ -53,51 +51,6 @@ void apagar_vendas(Vendas *lista){
     free(lista);
 }
 
-void popular_vendas(Vendas *lista){
-    FILE *arquivo;
-    Carrinho *carrinho;
-    struct comprador cliente;
-    struct produtoCarrinho produto;
-    int i, j, quant;
-    double desconto;
-
-    carrinho = criar_carrinho();
-
-    arquivo = fopen("dados/vendas.txt", "r");
-
-    if (tamanhoArquivo2("dados/vendas.txt") == 0){
-        return;
-    }
-
-    if (!arquivo)
-        return;
-    setlocale(LC_NUMERIC, "");
-
-    fscanf(arquivo, "%d ", &quant);
-    for (i = 0; i < quant; i++){
-        fscanf(arquivo, "%[^\n]%*c\n", &cliente.nome);
-        fscanf(arquivo, "%[^\n]%*c\n", &cliente.endereco);
-        fscanf(arquivo, "%[^\n]%*c\n", &cliente.telefone);
-
-        fscanf(arquivo, "%d\n", &j);
-        for (; j > 0; j--){
-            fscanf(arquivo, "%[^\n]%*c\n", &produto.nome);
-            fscanf(arquivo, "%lf\n", &produto.preco);
-            fscanf(arquivo, "%d\n", &produto.qtd);
-            popular_carrinho(carrinho, produto);
-        }
-
-        fscanf(arquivo, "%lf\n", &carrinho->desconto);
-        fscanf(arquivo, "%lf\n", &carrinho->descontoP);
-        fscanf(arquivo, "%lf\n", &carrinho->preco);
-        fscanf(arquivo, "%lf\n", &carrinho->precoFinal);
-
-        adicionar_venda(lista, cliente, carrinho);
-        carrinho = criar_carrinho();
-    }
-
-    fclose(arquivo);
-}
 
 void salvar_vendas(Vendas *lista){
     int i, j;
@@ -118,9 +71,6 @@ void salvar_vendas(Vendas *lista){
             fprintf(arquivo, "%lf\n", lista->vendas[i].carrinho.produtos[j].preco);
             fprintf(arquivo, "%d\n", lista->vendas[i].carrinho.produtos[j].qtd);
         }
-
-        fprintf(arquivo, "%lf\n", lista->vendas[i].carrinho.desconto);
-        fprintf(arquivo, "%d\n", lista->vendas[i].carrinho.descontoP);
         fprintf(arquivo, "%lf\n", lista->vendas[i].carrinho.preco);
         fprintf(arquivo, "%lf\n", lista->vendas[i].carrinho.precoFinal);
     }
@@ -161,7 +111,11 @@ int tamanhoArquivo3(const char* nome_arquivo){
 }
 
 void realizar_venda(Vendas *lista, Carrinho *lista_carrinho, Clientes *lista_c){
-    int i, j, ch;
+    if (listar_Carrinho == NULL || listar_Carrinho == 0){
+        printf("Carrinho vazio!\n");
+        system("pause");
+    }
+    int i;
     struct comprador cliente;
     printf("Confirmaçao de usuario\n");
     printf("Digite seu nome: ");
@@ -171,7 +125,7 @@ void realizar_venda(Vendas *lista, Carrinho *lista_carrinho, Clientes *lista_c){
     for(i = 0; i < lista_c->tamanho; i++){
         if(strcmp(lista_c->clientes[i].nome, cliente.nome) == 0){
             printf("Cliente localizado!\n");
-            printf("Bem vindo %s", cliente.nome);
+            printf("Bem vindo %s\n", cliente.nome);
             strcpy(cliente.endereco, lista_c->clientes[i].endereco);
             strcpy(cliente.telefone, lista_c->clientes[i].telefone);
             adicionar_venda(lista, cliente, lista_carrinho);
@@ -180,7 +134,6 @@ void realizar_venda(Vendas *lista, Carrinho *lista_carrinho, Clientes *lista_c){
             return;
         }
     }
-    printf("Deseja mesmo comprar os seguintes itens abaixo");
 }
 
 void listar_venda(Vendas *lista){
@@ -189,7 +142,7 @@ void listar_venda(Vendas *lista){
         printf("Lista nao foi iniciada");
         return;
     }
-    if (lista->vendas[i].carrinho.tamanho == 0){
+    if (lista->tamanho == 0){
         printf("Carrinho vazio");
         return;
     }
@@ -198,18 +151,13 @@ void listar_venda(Vendas *lista){
         printf("Endereco: %s\n", lista->vendas[i].cliente.endereco);
         printf("Telefone: %s\n", lista->vendas[i].cliente.telefone);
         printf("Itens no carrinho: %d\n", lista->vendas[i].carrinho.tamanho);
-
-        for (j = 0; j < lista->vendas[i].carrinho.tamanho; j++){
-            printf("Nome do item no carrinho: %s\n", lista->vendas[i].carrinho.produtos[j].nome);
-            printf("Valor: %lf\n", lista->vendas[i].carrinho.produtos[j].preco);
-            printf("Valor: %d\n", lista->vendas[i].carrinho.produtos[j].qtd);
+        for(j = 0; j < carrinho.tamanho; j++){
+            printf("Produtos: %s\n", lista->vendas[i].carrinho.produtos[j].nome);
+            printf("Valor: %.2lf\n", lista->vendas[i].carrinho.produtos[j].preco);
+            printf("Quantidade: %d\n", lista->vendas[i].carrinho.produtos[j].qtd);
         }
-
-        printf("Desconto: %lf\n", lista->vendas[i].carrinho.desconto);
-        printf("DescontoP %d\n", lista->vendas[i].carrinho.descontoP);
-        printf("Valor unitario: %lf\n", lista->vendas[i].carrinho.preco);
-        printf("Valor total: %lf\n", lista->vendas[i].carrinho.precoFinal);
     }
+
     system("pause");
 } 
 
