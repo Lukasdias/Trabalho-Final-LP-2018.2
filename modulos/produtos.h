@@ -1,11 +1,12 @@
+///////////////////////////////////////////////
+///////////////FUNÇÕES PRODUTOS/////////////////
+/////////////////////////////////////////////
 #ifndef PRODUTOS_H
 #define PRODUTOS_H
-#include <stdlib.h>
-#include <locale.h>
 
 struct produto {
     char nome[50];
-    float valor;
+    double valor;
     int qtd;
     char horas[9];
     char datas[9];
@@ -19,6 +20,7 @@ typedef struct {
 void addP(Produtos *);
 void listP(Produtos *);
 void editP(Produtos *);
+
 Produtos *criar_produtos();
 void armazenar_produtos(Produtos *);
 
@@ -28,6 +30,7 @@ void salvar_produtos(Produtos *);
 void adicionar_produtos(Produtos *, struct produto);
 void apagar_produto(Produtos *, int);
 //incluindo o diretório no nome do arquivo//
+//função para checar se o arquivo está vazio//
 int tamanhoArquivo2(const char* nome_arquivo);
 
 Produtos *criar_produtos(){
@@ -77,7 +80,7 @@ void popular_produtos(Produtos *lista){
         fscanf(arquivo, "%d\n", &tam);
         for (i = 0; i < tam; i++){
             fscanf(arquivo, "%[^\n]%*c\n", produto.nome);
-            fscanf(arquivo, "%f\n", &produto.valor);
+            fscanf(arquivo, "%lf\n", &produto.valor);
             fscanf(arquivo, "%d\n", &produto.qtd);
             fscanf(arquivo, "%[^\n]%*c\n", produto.datas);
             fscanf(arquivo, "%[^\n]%*c\n", produto.horas);
@@ -99,7 +102,7 @@ void salvar_produtos(Produtos *lista){
     int i;
     for (i = 0; i < lista->tamanho; i++){
         fprintf(arquivo, "%s\n", lista->produtos[i].nome);
-        fprintf(arquivo, "%.2f\n", lista->produtos[i].valor);
+        fprintf(arquivo, "%lf\n", lista->produtos[i].valor);
         fprintf(arquivo, "%d\n", lista->produtos[i].qtd);
         fprintf(arquivo, "%s\n", lista->produtos[i].datas);
         fprintf(arquivo, "%s\n", lista->produtos[i].horas);
@@ -108,8 +111,7 @@ void salvar_produtos(Produtos *lista){
     fclose(arquivo);
 }
 
-int tamanhoArquivo2(const char* nome_arquivo)
-{
+int tamanhoArquivo2(const char* nome_arquivo){
     FILE *arquivo = fopen(nome_arquivo, "r");
 
     if(arquivo == NULL)
@@ -127,14 +129,15 @@ void addP(Produtos *lista){
     char data[9];
     char horario[9];
     system("cls");
-    printf("======================Loja NerdZ===================\n");
-    printf("=====================Menu Adicionar=================\n");
+    printf("=================================Loja NerdZ====================================\n");
+    printf("================================NOVO PRODUTO===================================\n");
+    printf("===============================================================================\n");
     fflush(stdin);
     printf("Nome: ");
     scanf("%[^\n]*c", produto.nome);
     fflush(stdin);
     printf("Valor(inteiro ou float): ");
-    scanf("%f", &produto.valor);
+    scanf("%lf", &produto.valor);
     fflush(stdin);
     printf("Qtd em estoque(inteiro): ");
     scanf("%d", &produto.qtd);
@@ -148,27 +151,34 @@ void addP(Produtos *lista){
 
 void listP(Produtos *lista){
     int i;
+    
     system("cls");
-    printf("=====================Loja NerdZ===================\n");
-    printf("=====================Menu Listar=================\n");
+    printf("================================Loja NerdZ=====================================\n");
+    printf("===============================MENU LISTAR=====================================\n");
+    printf("=============================PRODUTOS LISTADOS=================================\n");
+    printf("===============================================================================\n");
+
     for (i = 0; i < lista->tamanho; i++){
         printf("Produto %d\n", i + 1);
         printf("Nome: %s\n", lista->produtos[i].nome);
         printf("Valor %.2f\n", lista->produtos[i].valor);
         printf("Quantidade em estoque: %d\n", lista->produtos[i].qtd);
         printf("Data : %s\nHorario: %s\n", lista->produtos[i].datas, lista->produtos[i].horas);
+        printf("===============================================================================\n");
     }
     system("pause");
 }
 
 void editP(Produtos *lista){
     int i, j;
-    char *user = (char *) malloc(100 * sizeof(char));
+    char *user = (char *) malloc(50 * sizeof(char));
     char data[9];
     char horario[9];
     system("cls");
-    printf("=====================Loja NerdZ===================\n");
-    printf("=====================Menu Editar=================\n");
+    printf("==================================Loja NerdZ===================================\n");
+    printf("=================================MENU PRODUTO==================================\n");
+    printf("================================EDITAR PRODUTO=================================\n");
+    printf("===============================================================================\n");
     printf("Informe um nome a ser buscado na lista de produtos: ");
     scanf("%[^\n]*c", user);
     fflush(stdin);
@@ -180,7 +190,7 @@ void editP(Produtos *lista){
             scanf("%[^\n]*c", lista->produtos[i].nome);
             fflush(stdin);
             printf("Novo Valor: ");
-            scanf("%f", &lista->produtos[i].valor);
+            scanf("%lf", &lista->produtos[i].valor);
             fflush(stdin);
             printf("Nova Quantidade em estoque: ");
             scanf("%d", &lista->produtos[i].qtd);
@@ -188,6 +198,7 @@ void editP(Produtos *lista){
             
             _strdate(data);
             _strtime(horario);
+
             strcpy(lista->produtos[i].datas, data);
             strcpy(lista->produtos[i].horas, horario);
             
@@ -202,8 +213,19 @@ void editP(Produtos *lista){
     system("pause");
 }
 
-int deleteP(Produtos *lista, const char* nomeProduto){
+int deleteP(Produtos *lista){
     int i = 0, k;
+    char *dados = (char *) malloc (100 * sizeof(char));
+
+    system("cls");
+    printf("==================================Loja NerdZ===================================\n");
+    printf("=================================MENU PRODUTO==================================\n");
+    printf("================================DELETAR PRODUTO================================\n");
+    printf("===============================================================================\n");
+
+    printf("informe o nome a ser buscado: ");
+    scanf("%[^\n]*c", dados);
+    fflush(stdin);
     if (lista == NULL){
         printf("Lista de produtos %c nula!\n", 130);
         system("pause");
@@ -215,24 +237,20 @@ int deleteP(Produtos *lista, const char* nomeProduto){
         system("pause");
         return 0;
     }
-    while(i < lista->tamanho && strcmp(lista->produtos[i].nome, nomeProduto)!= 0){
-        i++;
-    }
-
+    
     if (i == lista->tamanho){
         printf("Produto invalido!\n");
         system("pause");
         return 0;
     }
 
-    for(k = i; k < lista->tamanho-1; k++){
-        lista->produtos[k] = lista->produtos[k+1];
+    for (i = 0; i < lista->tamanho; i++){
+        if (strcmp(lista->produtos[i].nome, dados) == 0){
+            apagar_produto(lista, i);
+            printf("Produto removido com sucesso\n");
+            system("pause");
+        }
     }
-
-    lista->tamanho--;
-
-    printf("Produto removido com sucesso\n");
-    system("pause");
     return 1;
 }
 

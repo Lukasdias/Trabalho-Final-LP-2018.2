@@ -1,0 +1,16 @@
+Vendas realizadas: 1
+Data da venda 1: 11/21/18
+Horario da venda 1: 17:04:50
+Nome do cliente 1: Henrique viera
+Endereco do cliente 1: Bacanga Casa 25 Q.10
+Telefone do cliente 1: 99989898
+Quantidade de itens no carrinho do cliente 1: 2
+Nome do produto: boneco superman
+Valor do unitario produto: 23,00
+Quantidade solicitada: 10
+Nome do produto: camisa GOT
+Valor do unitario produto: 100,00
+Quantidade solicitada: 15
+Valor sem desconto: 1730,00
+Valor com desconto: 1297,50
+================================================================================
