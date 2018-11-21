@@ -189,7 +189,7 @@ void listar_venda(Vendas *lista, Carrinho *lista_c){
 void relatorio_do_dia(Vendas *lista, Carrinho *lista_c){
     FILE *arquivo;
     int i, j;
-    arquivo = fopen("dados/relatorio.txt", "w");
+    arquivo = fopen("dados/relatorio.txt", "a");
     printf("Gerando relatorio...\n");
 
     fprintf(arquivo, "Vendas realizadas: %d\n", lista->tamanho);
@@ -215,6 +215,9 @@ void relatorio_do_dia(Vendas *lista, Carrinho *lista_c){
     system("pause");
     fclose(arquivo);
 
+#ifdef _WIN32
+    system("notepad dados/relatorio.txt");
+#endif
 }
 
 #endif
