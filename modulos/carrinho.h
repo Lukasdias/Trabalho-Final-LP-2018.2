@@ -113,7 +113,8 @@ void remover_produto_carrinho(Carrinho *lista, int id){
 
 void add_carrinho(Carrinho *lista, Produtos *lista_p){
    struct produtoCarrinho produto;
-    int i, quantidade;
+
+    int i, desconto, quantidade;
 
     system("cls");
     printf("=================================Loja NerdZ====================================\n");
@@ -140,17 +141,17 @@ void add_carrinho(Carrinho *lista, Produtos *lista_p){
             };
             lista_p->produtos[i].qtd -= quantidade;
             printf("definir desconto de: ");
-            scanf("%d", &lista->desconto);
+            scanf("%d", &desconto);
             fflush(stdin);
             while((lista->desconto > 100)){
                 printf("O produto ja esta de gratuito com esse desconto senhor!\n");
                 printf("Digite (100 %) ou uma quantia menor!");
                 printf("Desconto: ");
-                scanf("%d", &lista->desconto);
+                scanf("%d", &desconto);
                 fflush(stdin);
             }
             adicionar_carrinho(lista, produto, quantidade);
-            definir_desconto(lista, lista->desconto);
+            definir_desconto(lista, desconto);
             system("pause");
             return;
         }
