@@ -9,14 +9,15 @@
 #include "modulos/clientes.h"
 #include "modulos/produtos.h"
 #include "modulos/carrinho.h"
+#include "modulos/vendas.h"
 
 //#define COLOR_RED "\x1b[31m"
 //#define COLOR_RESET "\x1b[0m"0
 
-void menu(Clientes *, Produtos *, Carrinho *);
+void menu(Clientes *, Produtos *, Carrinho *, Vendas *);
 void menuProduto(Produtos *);
 void menuCliente(Clientes *);
-void menuVendas(Carrinho *, Produtos *);
+void menuVendas(Carrinho *, Produtos *, Vendas *, Clientes *);
 //void menuCarrinho(Carrinho *lista);
 
 void addC(Clientes *);
@@ -38,20 +39,24 @@ int main(void){
     Clientes *lista_c;
     Produtos *lista_p;
     Carrinho *lista_carrinho;
+    Vendas *lista_vendas;
 
     lista_c = criar_clientes();
     lista_p = criar_produtos();
     lista_carrinho = criar_carrinho();
+    lista_vendas = criar_vendas();
+
 
     popular_clientes(lista_c);
     popular_produtos(lista_p);
+    popular_vendas(lista_vendas);
 
-    menu(lista_c, lista_p, lista_carrinho);
+    menu(lista_c, lista_p, lista_carrinho, lista_vendas);
 
     //printf(COLOR_RESET);
 }
 
-void menu(Clientes *lista_C, Produtos *lista_P, Carrinho *lista_Carrinho){
+void menu(Clientes *lista_C, Produtos *lista_P, Carrinho *lista_Carrinho, Vendas *lista_vendas){
     int podeContinuar = true, ch;
      while(podeContinuar == true){
          system("cls");
@@ -73,12 +78,13 @@ void menu(Clientes *lista_C, Produtos *lista_P, Carrinho *lista_Carrinho){
                 menuCliente(lista_C);
                 break;
             case 3:
-                menuVendas(lista_Carrinho, lista_P);
+                menuVendas(lista_Carrinho, lista_P, lista_vendas, lista_C);
                 break;
             case 0:
                 podeContinuar = false;
                 armazenar_clientes(lista_C);
                 armazenar_produtos(lista_P);
+                salvar_vendas(lista_vendas);
                 //system("pause");
                 break;
         }
@@ -158,7 +164,7 @@ void menuCliente(Clientes *lista){
     }
 }
 
-void menuVendas(Carrinho *lista, Produtos *listaP){
+void menuVendas(Carrinho *lista, Produtos *listaP, Vendas *lista_vendas, Clientes *lista_c){
     int podeContinuar = true,ch;
 
     while(podeContinuar == true){
@@ -167,7 +173,8 @@ void menuVendas(Carrinho *lista, Produtos *listaP){
         printf("[1] *** Adicionar no Carrinho\n");
         printf("[2] *** Remover do Carrinho\n");
         printf("[3] *** Listar Carrinho\n");
-        printf("[4] *** Ver Compras realizadas\n");
+        printf("[4] *** Realizar Compra\n");
+        printf("[5] *** Listar compras ja realizadas\n");
         printf("[0] *** Voltar ao menu principal\n");
         printf("===============================================================================\n");
         printf("Escolha: ");
@@ -185,7 +192,10 @@ void menuVendas(Carrinho *lista, Produtos *listaP){
                     listar_Carrinho(lista);
                     break;
                 case 4:
+                    realizar_venda(lista_vendas, lista, lista_c);
                     break;
+                case 5:
+                    listar_venda(lista_vendas);
                 case 0:
                     podeContinuar = false;
                     break;
