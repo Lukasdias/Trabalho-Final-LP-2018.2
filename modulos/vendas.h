@@ -7,7 +7,7 @@
 #include "clientes.h"
 #include "carrinho.h"
 
-struct comprador {
+struct client {
     char nome[100];
     char endereco[210];
     char telefone[15];
@@ -17,7 +17,7 @@ struct comprador {
 
 struct venda {
     int id;
-    struct comprador cliente;
+    struct client cliente;
     Carrinho carrinho;
 };
 
@@ -30,7 +30,7 @@ Vendas *criar_vendas();
 void apagar_vendas(Vendas *);
 void popular_vendas(Vendas *);
 void salvar_vendas(Vendas *);
-void adicionar_venda(Vendas *, struct comprador cliente, Carrinho *);
+void adicionar_venda(Vendas *, struct client cliente, Carrinho *);
 void remover_venda(Vendas *, int);
 void relizar_vendas(Vendas *, Carrinho *, Clientes *);
 void listar_vendas(Vendas *, Carrinho *);
@@ -49,7 +49,6 @@ void apagar_vendas(Vendas *lista){
         printf("Lista nao existe");
         return;
     }
-
     free(lista->vendas);
     free(lista);
 }
@@ -82,7 +81,7 @@ void salvar_vendas(Vendas *lista){
     fclose(arquivo);
 }
 
-void adicionar_venda(Vendas *lista, struct comprador cliente, Carrinho *carrinho){
+void adicionar_venda(Vendas *lista, struct client cliente, Carrinho *carrinho){
     if (!lista){
         fprintf(stderr, "As vendas precisam ser inicializadas primeiro.\n");
         return;
@@ -127,7 +126,7 @@ void realizar_venda(Vendas *lista, Carrinho *lista_carrinho, Clientes *lista_c){
     }
     char hora[9], data[9];
     int i;
-    struct comprador cliente;
+    struct client cliente;
     system("cls");
     printf("=================================Loja NerdZ====================================\n");
     printf("===================================VENDAS======================================\n");

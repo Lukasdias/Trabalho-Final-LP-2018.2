@@ -5,14 +5,10 @@
 #include <conio.h>
 #include <stdbool.h>
 #include <locale.h>
-
 #include "modulos/clientes.h"
 #include "modulos/produtos.h"
 #include "modulos/carrinho.h"
 #include "modulos/vendas.h"
-
-//#define COLOR_RED "\x1b[31m"
-//#define COLOR_RESET "\x1b[0m"0
 
 void menu(Clientes *, Produtos *, Carrinho *, Vendas *);
 void menuProduto(Produtos *);
