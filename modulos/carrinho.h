@@ -22,7 +22,7 @@ typedef struct {
 } Carrinho;
 
 Carrinho *criar_carrinho();
-void apagar_carrinho(Carrinho *);
+void liberar_carrinho(Carrinho *);
 void salvar_itens_carrinho(Carrinho *);
 void popular_carrinho(Carrinho *, struct produtoCarrinho produto);
 void adicionar_carrinho(Carrinho *, struct produtoCarrinho produto, int quantidade);
@@ -42,7 +42,7 @@ Carrinho *criar_carrinho(){
     return lista;
 }
 
-void apagar_carrinho(Carrinho *lista){
+void liberar_carrinho(Carrinho *lista){
     if (lista == NULL){
         printf("O carrinho precisa ser inicializado primeiro.\n");
         return;

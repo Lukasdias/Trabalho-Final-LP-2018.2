@@ -14,3 +14,4 @@ Quantidade solicitada: 15
 Valor sem desconto: 1730,00
 Valor com desconto: 1297,50
 ================================================================================
+Vendas realizadas: 0

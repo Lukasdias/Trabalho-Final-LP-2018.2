@@ -27,7 +27,7 @@ typedef struct {
 } Vendas;
 
 Vendas *criar_vendas();
-void apagar_vendas(Vendas *);
+void liberar_vendas(Vendas *);
 void popular_vendas(Vendas *);
 void salvar_vendas(Vendas *);
 void adicionar_venda(Vendas *, struct client cliente, Carrinho *);
@@ -44,7 +44,7 @@ Vendas *criar_vendas(){
     return lista;
 }
 
-void apagar_vendas(Vendas *lista){
+void liberar_vendas(Vendas *lista){
     if (lista == NULL){
         printf("Lista nao existe");
         return;
@@ -119,14 +119,17 @@ void realizar_venda(Vendas *lista, Carrinho *lista_carrinho, Clientes *lista_c){
         system("pause");
         return;
     }
-    if(lista_carrinho == 0){
+
+    if (lista_carrinho == 0){
         printf("carrinho vazio!!!\n");
         system("pause");
         return;
     }
+
     char hora[9], data[9];
     int i;
     struct client cliente;
+
     system("cls");
     printf("=================================Loja NerdZ====================================\n");
     printf("===================================VENDAS======================================\n");
@@ -137,7 +140,7 @@ void realizar_venda(Vendas *lista, Carrinho *lista_carrinho, Clientes *lista_c){
     fflush(stdin);
 
     for(i = 0; i < lista_c->tamanho; i++){
-        if(strcmp(lista_c->clientes[i].nome, cliente.nome) == 0){
+        if (strcmp(lista_c->clientes[i].nome, cliente.nome) == 0){
             printf("Cliente localizado!\n");
             printf("Bem vindo %s\n", cliente.nome);
             strcpy(cliente.endereco, lista_c->clientes[i].endereco);
@@ -190,8 +193,8 @@ void relatorio_do_dia(Vendas *lista, Carrinho *lista_c){
     int i, j;
     arquivo = fopen("dados/relatorio.txt", "a");
     printf("Gerando relatorio...\n");
-
     fprintf(arquivo, "Vendas realizadas: %d\n", lista->tamanho);
+
     for (i = 0; i < lista->tamanho; i++){
         fprintf(arquivo, "Data da venda %d: %s\n", i + 1, lista->vendas[i].cliente.data);
         fprintf(arquivo, "Horario da venda %d: %s\n", i + 1, lista->vendas[i].cliente.hora);
@@ -205,6 +208,7 @@ void relatorio_do_dia(Vendas *lista, Carrinho *lista_c){
             fprintf(arquivo, "Valor do unitario produto: %.2lf\n", lista->vendas[i].carrinho.produtos[j].preco);
             fprintf(arquivo, "Quantidade solicitada: %d\n", lista->vendas[i].carrinho.produtos[j].qtd);
         }
+        
         fprintf(arquivo, "Valor sem desconto: %.2lf\n", lista->vendas[i].carrinho.preco);
         fprintf(arquivo, "Valor com desconto: %.2lf\n", lista->vendas[i].carrinho.precoFinal);
         fprintf(arquivo, "================================================================================\n");
