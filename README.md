@@ -31,7 +31,7 @@
      - O usuário do sistema deve poder conceder descontos, em porcentagem ou em valores reais.
 
 ## Salvar informações sobre a venda:
-<a href = "https://www.google.com">- Data da realização</a>
+- Data da realização
 - Cliente que comprou
 - Produtos comprados
     - Cada um com a sua quantidade específica.
