@@ -39,4 +39,3 @@
     - Ao encerrar a sessão os clientes ou produtos adicionados seram inseridos no arquivo
 - Gerar relatório de vendas do dia
 
-**Programa feito no Windows**
